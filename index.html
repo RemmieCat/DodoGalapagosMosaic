@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galápagos Mosaic – UI Mockup</title>
+<style>
+
+/* ===================================================
+   CSS VARIABLES & RESET
+   =================================================== */
+:root {
+  --bg-deep:    #0a1628;
+  --bg-panel:   #122040;
+  --bg-card:    #1a3055;
+  --bg-tile:    #0d2035;
+  --gold:       #c9a84c;
+  --gold-light: #f0d080;
+  --teal:       #00c5c5;
+  --teal-glow:  rgba(0,197,197,0.35);
+  --red:        #e84040;
+  --text:       #e8dcc8;
+  --muted:      #8899aa;
+  --border:     rgba(200,180,120,0.2);
+  --shadow:     0 4px 20px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button { font-family: inherit; }
+
+/* ===================================================
+   MOCKUP NAV BAR
+   =================================================== */
+#mockup-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(5, 10, 20, 0.92);
+  border-bottom: 1px solid var(--gold);
+  display: flex;
+  align-items: center;
+  padding: 6px 14px;
+  gap: 6px;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+#mockup-nav .nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-right: 6px;
+  text-transform: uppercase;
+}
+.nav-btn {
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--muted);
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.nav-btn:hover  { border-color: var(--gold); color: var(--gold); }
+.nav-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.12); }
+
+/* ===================================================
+   SCREEN CONTAINERS
+   =================================================== */
+.screen {
+  display: none;
+  min-height: 100vh;
+  padding-top: 37px;
+}
+.screen.active { display: flex; flex-direction: column; }
+
+
+/* ===================================================
+   SCREEN 1 — SPLASH
+   =================================================== */
+#splash {
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(ellipse at 50% 40%, #0d2e4a 0%, #0a1628 65%);
+  position: relative;
+  gap: 0;
+}
+
+.splash-fauna {
+  font-size: clamp(28px, 5vw, 48px);
+  letter-spacing: 10px;
+  margin-bottom: 28px;
+  opacity: 0.65;
+}
+
+.splash-title {
+  font-size: clamp(38px, 8vw, 80px);
+  font-weight: 800;
+  color: var(--gold-light);
+  text-shadow: 0 0 50px rgba(201,168,76,0.55);
+  letter-spacing: 4px;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.splash-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 20px auto;
+}
+
+.splash-sub {
+  font-size: 13px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.splash-play {
+  margin-top: 52px;
+  background: linear-gradient(135deg, #c9a84c, #f0d080);
+  color: #0a1628;
+  border: none;
+  padding: 18px 72px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 36px rgba(201,168,76,0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.splash-play:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 56px rgba(201,168,76,0.6);
+}
+
+.splash-version {
+  position: absolute;
+  bottom: 18px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+
+/* ===================================================
+   SCREEN 2 — SETTINGS
+   =================================================== */
+#settings {
+  background: var(--bg-deep);
+  flex-direction: column;
+}
+
+.settings-header {
+  text-align: center;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.settings-header h2 {
+  font-size: 18px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.settings-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Left panel */
+.settings-left {
+  width: 340px;
+  flex-shrink: 0;
+  padding: 22px 20px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  overflow-y: auto;
+}
+
+.s-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* Player count buttons */
+.count-row {
+  display: flex;
+  gap: 8px;
+}
+.count-btn {
+  flex: 1;
+  padding: 11px 4px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 700;
+  transition: all 0.15s;
+}
+.count-btn.active {
+  background: rgba(201,168,76,0.14);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.count-btn:hover:not(.active) { border-color: rgba(201,168,76,0.4); color: var(--text); }
+
+/* Player rows */
+.player-inputs { display: flex; flex-direction: column; gap: 9px; }
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.player-num-badge {
+  width: 26px; height: 26px;
+  background: var(--gold);
+  color: #0a1628;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+.player-name-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.player-name-input:focus { border-color: var(--gold); }
+.type-toggle {
+  background: var(--bg-panel);
+  border: 1px solid #4a9eff66;
+  color: #4a9eff;
+  padding: 6px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.type-toggle.ai { border-color: #a050ff66; color: #a050ff; }
+
+.settings-start {
+  background: linear-gradient(135deg, #c9a84c, #f0d080);
+  color: #0a1628;
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: opacity 0.15s;
+}
+.settings-start:hover { opacity: 0.9; }
+
+/* Right panel */
+.settings-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tab-btn {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.tab-btn:hover:not(.active) { color: var(--text); }
+.tab-pane { display: none; padding: 20px 24px; overflow-y: auto; flex: 1; }
+.tab-pane.active { display: block; }
+
+/* Rules text */
+.rules-body { line-height: 1.75; font-size: 14px; }
+.rules-body h4 { color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 6px; }
+.rules-body h4:first-child { margin-top: 0; }
+.rules-body ul { padding-left: 18px; }
+.rules-body li { margin-bottom: 5px; color: var(--text); }
+.rules-body p  { color: var(--text); }
+.rules-body strong { color: var(--gold-light); }
+
+/* Tile guide (settings) */
+.tile-guide-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 4px;
+}
+.tile-pair-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tile-pair-card .tile-icon {
+  text-align: center;
+}
+.swatch-lg {
+  width: 46px; height: 46px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.swatch-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.pair-arrow { font-size: 20px; color: var(--muted); flex-shrink: 0; }
+
+
+/* ===================================================
+   SCREEN 3 — GAME
+   =================================================== */
+#game {
+  background: var(--bg-deep);
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.game-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* ---- Main area (left ~65%) ---- */
+.game-main {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px 10px;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Top bar */
+.game-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+
+.current-player-block .cp-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+.current-player-block .cp-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Strikes */
+.strikes-block {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(232,64,64,0.1);
+  border: 1px solid rgba(232,64,64,0.3);
+  border-radius: 7px;
+  padding: 6px 10px;
+}
+.strikes-label { font-size: 10px; color: var(--red); text-transform: uppercase; letter-spacing: 1px; }
+.strike-pip {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--red);
+  background: transparent;
+}
+.strike-pip.on { background: var(--red); }
+
+/* Player blocks */
+.player-blocks { display: flex; gap: 7px; }
+.player-block {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 11px;
+  text-align: center;
+  min-width: 76px;
+}
+.player-block.active { border-color: var(--gold); box-shadow: 0 0 10px rgba(201,168,76,0.2); }
+.pb-name { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 74px; }
+.pb-progress { font-size: 19px; font-weight: 700; }
+.pb-pts { font-size: 11px; color: var(--teal); }
+
+/* Board */
+.board-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  aspect-ratio: 1 / 1;
+  max-height: min(100%, 420px);
+  max-width: min(420px, 100%);
+  width: 100%;
+}
+
+.tile {
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(22px, 4vw, 44px);
+  border: 2px solid rgba(255,255,255,0.12);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.35), 0 3px 10px rgba(0,0,0,0.4);
+  aspect-ratio: 1;
+}
+.tile:hover { transform: scale(1.06); box-shadow: 0 0 18px rgba(255,255,255,0.18); }
+.tile.selected-tile { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.tile-A { background: linear-gradient(135deg, #f7c800, #e08a00); }
+.tile-B { background: linear-gradient(135deg, #1c1c42, #2e2e60); border-color: rgba(160,130,255,0.3); }
+.tile-C { background: linear-gradient(135deg, #ff8c00, #cc5a00); }
+.tile-D { background: linear-gradient(135deg, #cc1030, #800010); }
+.tile-E { background: linear-gradient(135deg, #6b2d8b, #3e1555); }
+.tile-F { background: linear-gradient(135deg, #1e8fff, #0040a0); }
+.tile-G { background: linear-gradient(135deg, #6d7d8e, #3e4e5e); }
+.tile-H { background: linear-gradient(135deg, #1e8a20, #0d4510); }
+
+/* Action buttons */
+.action-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 10px 0 4px;
+  flex-shrink: 0;
+}
+.act-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.act-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.act-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.act-btn.primary {
+  background: linear-gradient(135deg, #c9a84c, #f0d080);
+  color: #0a1628;
+  border-color: transparent;
+  font-weight: 700;
+}
+.act-btn.primary:disabled { opacity: 0.35; }
+
+/* ---- Side area (right ~35%) ---- */
+.game-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 10px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.hand-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.hand {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+/* Pattern Cards */
+.pcard {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.pcard:hover { border-color: rgba(201,168,76,0.45); }
+.pcard.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+.pcard.scorable {
+  border-color: var(--teal);
+  box-shadow: 0 0 14px var(--teal-glow);
+}
+
+.pcard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.pcard-pts { font-size: 17px; font-weight: 800; color: var(--gold); }
+.pcard-score-btn {
+  background: var(--teal);
+  color: #0a1628;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  display: none;
+}
+.pcard.scorable .pcard-score-btn { display: block; }
+
+/* Pattern grid inside card */
+.pgrid {
+  display: grid;
+  gap: 3px;
+  width: fit-content;
+  margin: 0 auto;
+}
+.pcell {
+  width: 20px; height: 20px;
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.pcell.wc { background: rgba(255,255,255,0.07); color: var(--muted); font-size: 9px; }
+.pc-A { background: rgba(247,200,0,0.65); }
+.pc-B { background: rgba(28,28,66,0.9); }
+.pc-C { background: rgba(255,140,0,0.65); }
+.pc-D { background: rgba(204,16,48,0.65); }
+.pc-E { background: rgba(107,45,139,0.65); }
+.pc-F { background: rgba(30,143,255,0.65); }
+.pc-G { background: rgba(109,125,142,0.65); }
+.pc-H { background: rgba(30,138,32,0.65); }
+
+/* Guide tabs */
+.guide-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  min-height: 0;
+}
+.guide-tabbar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.guide-tab-btn {
+  flex: 1;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.15s;
+}
+.guide-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+.guide-pane { display: none; padding: 10px; overflow-y: auto; flex: 1; }
+.guide-pane.active { display: block; }
+
+/* Mini tile guide */
+.tile-guide-mini { display: flex; flex-direction: column; gap: 5px; }
+.tpm {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--bg-panel);
+  padding: 6px 9px;
+  border-radius: 6px;
+}
+.swatch-sm {
+  width: 26px; height: 26px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.tpm-arrow { color: var(--muted); font-size: 12px; flex-shrink: 0; }
+.tpm-label { font-size: 11px; color: var(--muted); }
+
+/* Turn guide */
+.turn-guide { font-size: 12px; line-height: 1.65; }
+.turn-guide .tg-action { color: var(--gold); font-weight: 700; }
+.turn-guide p { margin-bottom: 7px; }
+.turn-guide .info-link { color: var(--teal); text-decoration: underline; cursor: pointer; font-size: 11px; }
+
+
+/* ===================================================
+   SCREEN 4 — RESULTS
+   =================================================== */
+#results {
+  background: radial-gradient(ellipse at 50% 35%, #0d2e4a 0%, #0a1628 65%);
+  align-items: center;
+  padding: 32px 20px 40px;
+  gap: 0;
+}
+
+.results-winner-block { text-align: center; margin-bottom: 30px; }
+.results-trophy { font-size: 60px; line-height: 1; margin-bottom: 6px; }
+.results-crown-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--muted);
+}
+.results-winner-name {
+  font-size: clamp(30px, 6vw, 56px);
+  font-weight: 800;
+  color: var(--gold-light);
+  text-shadow: 0 0 40px rgba(201,168,76,0.55);
+  letter-spacing: 2px;
+}
+.results-winner-sub { font-size: 16px; color: var(--teal); margin-top: 4px; }
+
+.results-bonus { font-size: 12px; color: var(--muted); margin-bottom: 24px; font-style: italic; }
+
+.results-card {
+  width: 100%;
+  max-width: 500px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.results-table { width: 100%; border-collapse: collapse; }
+.results-table th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.2);
+}
+.results-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(200,180,120,0.07);
+  font-size: 15px;
+}
+.results-table tr:last-child td { border-bottom: none; }
+.results-table .row-winner td { color: var(--gold); }
+
+.rank-badge {
+  display: inline-flex;
+  width: 28px; height: 28px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 800;
+  background: var(--bg-tile);
+  color: var(--muted);
+}
+.rank-badge.r1 { background: var(--gold); color: #0a1628; }
+.rank-badge.r2 { background: #9e9e9e; color: #0a1628; }
+.rank-badge.r3 { background: #a05030; color: #fff; }
+
+.play-again-btn {
+  background: linear-gradient(135deg, #c9a84c, #f0d080);
+  color: #0a1628;
+  border: none;
+  padding: 15px 52px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(201,168,76,0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.play-again-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 44px rgba(201,168,76,0.5);
+}
+
+
+/* ===================================================
+   RESPONSIVE — PORTRAIT / MOBILE
+   =================================================== */
+@media (max-width: 700px) {
+  .game-layout    { flex-direction: column; }
+  .game-main      { border-right: none; border-bottom: 1px solid var(--border); flex: none; }
+  .game-side      { flex: none; max-height: 55vh; }
+  .hand           { grid-template-columns: repeat(3, 1fr); }
+  .board-grid     { max-height: 260px; }
+  .settings-body  { flex-direction: column; }
+  .settings-left  { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .tile-guide-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- MOCKUP NAVIGATION                                            -->
+<!-- ============================================================ -->
+<nav id="mockup-nav">
+  <span class="nav-label">Mockup</span>
+  <button class="nav-btn active" onclick="showScreen('splash')">① Splash</button>
+  <button class="nav-btn"        onclick="showScreen('settings')">② Settings</button>
+  <button class="nav-btn"        onclick="showScreen('game')">③ Game</button>
+  <button class="nav-btn"        onclick="showScreen('game-solo')">③b Game (Solo)</button>
+  <button class="nav-btn"        onclick="showScreen('results')">④ Results</button>
+</nav>
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 1 — SPLASH                                           -->
+<!-- ============================================================ -->
+<div id="splash" class="screen active">
+  <div class="splash-fauna">🦎 🐢 🦅 🐧 🦭</div>
+  <div class="splash-title">Galápagos<br>Mosaic</div>
+  <div class="splash-divider"></div>
+  <div class="splash-sub">A Pattern Matching Strategy Game</div>
+  <button class="splash-play" onclick="showScreen('settings')">PLAY</button>
+  <div class="splash-version">v 0.1.0</div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 2 — SETTINGS                                         -->
+<!-- ============================================================ -->
+<div id="settings" class="screen">
+  <div class="settings-header">
+    <h2>Game Setup</h2>
+  </div>
+  <div class="settings-body">
+
+    <!-- Left: player config -->
+    <div class="settings-left">
+
+      <div>
+        <div class="s-section-label">Number of Players</div>
+        <div class="count-row">
+          <button class="count-btn"        onclick="setPlayerCount(1,this)">1</button>
+          <button class="count-btn active" onclick="setPlayerCount(2,this)">2</button>
+          <button class="count-btn"        onclick="setPlayerCount(3,this)">3</button>
+          <button class="count-btn"        onclick="setPlayerCount(4,this)">4</button>
+          <button class="count-btn"        onclick="setPlayerCount(5,this)">5</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="s-section-label">Players</div>
+        <div class="player-inputs">
+          <div class="player-row" id="prow1">
+            <div class="player-num-badge">1</div>
+            <input class="player-name-input" type="text" value="Alex" placeholder="Player 1">
+          </div>
+          <div class="player-row" id="prow2">
+            <div class="player-num-badge">2</div>
+            <input class="player-name-input" type="text" value="Jordan" placeholder="Player 2">
+            <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
+          </div>
+          <div class="player-row" id="prow3" style="display:none">
+            <div class="player-num-badge">3</div>
+            <input class="player-name-input" type="text" value="Player 3" placeholder="Player 3">
+            <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
+          </div>
+          <div class="player-row" id="prow4" style="display:none">
+            <div class="player-num-badge">4</div>
+            <input class="player-name-input" type="text" value="Player 4" placeholder="Player 4">
+            <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
+          </div>
+          <div class="player-row" id="prow5" style="display:none">
+            <div class="player-num-badge">5</div>
+            <input class="player-name-input" type="text" value="Player 5" placeholder="Player 5">
+            <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="settings-start" onclick="showScreen('game')">Start Game</button>
+    </div>
+
+    <!-- Right: rules & tile guide tabs -->
+    <div class="settings-right">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchSettingsTab(this,'stab-multi')">Multiplayer Rules</button>
+        <button class="tab-btn"        onclick="switchSettingsTab(this,'stab-solo')">Solo Rules</button>
+        <button class="tab-btn"        onclick="switchSettingsTab(this,'stab-tiles')">Tile Guide</button>
+      </div>
+
+      <div id="stab-multi" class="tab-pane active">
+        <div class="rules-body">
+          <h4>Objective</h4>
+          <p>Score the most points by matching tile patterns to cards in your hand.</p>
+
+          <h4>Turn Actions</h4>
+          <ul>
+            <li><strong>Shift:</strong> Discard 1 card to swap two adjacent tiles (no diagonals).</li>
+            <li><strong>Flip:</strong> Discard 1 card to flip a tile to its opposite side.</li>
+            <li><strong>Score:</strong> Play a card whose pattern matches the current board. Collect its points.</li>
+            <li><strong>Skip:</strong> Draw 2 cards (max 6 in hand). Ends your turn immediately. Cannot skip two turns in a row.</li>
+          </ul>
+
+          <h4>End of Turn</h4>
+          <p>Draw back up to 4 cards. Pass the device to the next player.</p>
+
+          <h4>Winning</h4>
+          <p>Endgame triggers when any player collects enough cards. Each remaining player gets one more turn, then scores are tallied.</p>
+          <p><strong>Bonus:</strong> Player(s) with the most 1-point cards earn +3 points.</p>
+
+          <h4>Card Thresholds to Trigger Endgame</h4>
+          <ul>
+            <li>2 players — 10 cards</li>
+            <li>3 players — 9 cards</li>
+            <li>4 players — 8 cards</li>
+            <li>5 players — 7 cards</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="stab-solo" class="tab-pane">
+        <div class="rules-body">
+          <h4>Setup</h4>
+          <p>Use a custom 16-card mini-deck: 8×1pt, 4×2pt, 3×3pt, 1×5pt. Draw 4 cards to start.</p>
+
+          <h4>Strike Mechanic</h4>
+          <p>You <em>must</em> score at least one card each turn. If you end your turn without scoring, you gain 1 strike.</p>
+
+          <h4>Actions</h4>
+          <ul>
+            <li><strong>Shift / Flip / Score:</strong> Same rules as multiplayer.</li>
+            <li><strong>Skip:</strong> Draw 2 cards. Only allowed if it's your first action, you have ≤ 4 cards, you didn't skip last turn, and cards are available.</li>
+          </ul>
+
+          <h4>Winning &amp; Losing</h4>
+          <ul>
+            <li>🏆 <strong>Win:</strong> Score all 16 cards before your 4th strike.</li>
+            <li>💀 <strong>Lose:</strong> Accumulate 4 strikes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="stab-tiles" class="tab-pane">
+        <div class="s-section-label" style="margin-bottom:14px">
+          Each tile is double-sided. Flipping a tile reveals its other face.
+        </div>
+        <div class="tile-guide-grid">
+
+          <div class="tile-pair-card">
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div>
+              <div class="swatch-label">A – Sun</div>
+            </div>
+            <div class="pair-arrow">⇄</div>
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div>
+              <div class="swatch-label">B – Moon</div>
+            </div>
+            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 1 tile</div>
+          </div>
+
+          <div class="tile-pair-card">
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div>
+              <div class="swatch-label">C – Fish</div>
+            </div>
+            <div class="pair-arrow">⇄</div>
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div>
+              <div class="swatch-label">D – Bird</div>
+            </div>
+            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 2 tiles</div>
+          </div>
+
+          <div class="tile-pair-card">
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div>
+              <div class="swatch-label">E – Horse</div>
+            </div>
+            <div class="pair-arrow">⇄</div>
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div>
+              <div class="swatch-label">F – Sailboat</div>
+            </div>
+            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 3 tiles</div>
+          </div>
+
+          <div class="tile-pair-card">
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div>
+              <div class="swatch-label">G – Rock</div>
+            </div>
+            <div class="pair-arrow">⇄</div>
+            <div class="tile-icon">
+              <div class="swatch-lg" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div>
+              <div class="swatch-label">H – Leaf</div>
+            </div>
+            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 3 tiles</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 3 — GAME (Multiplayer, landscape)                    -->
+<!-- ============================================================ -->
+<div id="game" class="screen">
+  <div class="game-layout">
+
+    <!-- MAIN AREA -->
+    <div class="game-main">
+
+      <!-- Top bar -->
+      <div class="game-topbar">
+        <div class="current-player-block">
+          <div class="cp-label">Current Player</div>
+          <div class="cp-name">Alex</div>
+        </div>
+        <div class="topbar-right">
+          <div class="player-blocks">
+            <div class="player-block active">
+              <div class="pb-name">Alex</div>
+              <div class="pb-progress">2 / 10</div>
+              <div class="pb-pts">4 pts</div>
+            </div>
+            <div class="player-block">
+              <div class="pb-name">Jordan</div>
+              <div class="pb-progress">1 / 10</div>
+              <div class="pb-pts">2 pts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Board -->
+      <div class="board-container">
+        <div class="board-grid">
+          <div class="tile tile-A">🌞</div>
+          <div class="tile tile-C">🐠</div>
+          <div class="tile tile-B">🌙</div>
+          <div class="tile tile-F">⛵</div>
+          <div class="tile tile-G">🪨</div>
+          <div class="tile tile-D">🦅</div>
+          <div class="tile tile-H">🌿</div>
+          <div class="tile tile-E">🐎</div>
+          <div class="tile tile-H">🌿</div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-bar">
+        <button class="act-btn" disabled>Skip &amp; Draw 2</button>
+        <button class="act-btn" disabled>↩ Undo</button>
+        <button class="act-btn" disabled>💡 Hint</button>
+        <button class="act-btn primary" disabled>End Turn</button>
+      </div>
+    </div>
+
+    <!-- SIDE AREA -->
+    <div class="game-side">
+      <div class="hand-label">Alex's Hand</div>
+      <div class="hand">
+
+        <!-- Card 1: 1pt · 1×2 · scorable (teal glow) -->
+        <div class="pcard scorable">
+          <div class="pcard-top">
+            <span class="pcard-pts">1</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
+            <div class="pcell pc-C">🐠</div>
+            <div class="pcell wc">—</div>
+          </div>
+        </div>
+
+        <!-- Card 2: 2pt · 2×2 · selected (gold border) -->
+        <div class="pcard selected">
+          <div class="pcard-top">
+            <span class="pcard-pts">2</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
+            <div class="pcell pc-A">🌞</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-E">🐎</div>
+          </div>
+        </div>
+
+        <!-- Card 3: 2pt · 1×3 · normal -->
+        <div class="pcard">
+          <div class="pcard-top">
+            <span class="pcard-pts">2</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-G">🪨</div>
+            <div class="pcell wc">—</div>
+          </div>
+        </div>
+
+        <!-- Card 4: 3pt · 2×2 · normal -->
+        <div class="pcard">
+          <div class="pcard-top">
+            <span class="pcard-pts">3</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
+            <div class="pcell pc-F">⛵</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-C">🐠</div>
+            <div class="pcell wc">—</div>
+          </div>
+        </div>
+
+      </div><!-- /hand -->
+
+      <!-- Guide tabs -->
+      <div class="guide-panel">
+        <div class="guide-tabbar">
+          <button class="guide-tab-btn active" onclick="switchGuideTab(this,'gtile')">Tile Guide</button>
+          <button class="guide-tab-btn"        onclick="switchGuideTab(this,'gturn')">Turn Guide</button>
+        </div>
+
+        <div id="gtile" class="guide-pane active">
+          <div class="tile-guide-mini">
+            <div class="tpm">
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div>
+              <div class="tpm-arrow">⇄</div>
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div>
+              <div class="tpm-label">Sun / Moon</div>
+            </div>
+            <div class="tpm">
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div>
+              <div class="tpm-arrow">⇄</div>
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div>
+              <div class="tpm-label">Fish / Bird</div>
+            </div>
+            <div class="tpm">
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div>
+              <div class="tpm-arrow">⇄</div>
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div>
+              <div class="tpm-label">Horse / Sailboat</div>
+            </div>
+            <div class="tpm">
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div>
+              <div class="tpm-arrow">⇄</div>
+              <div class="swatch-sm" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div>
+              <div class="tpm-label">Rock / Leaf</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="gturn" class="guide-pane">
+          <div class="turn-guide">
+            <p><span class="tg-action">Select Card</span> — Tap a card to select it (gold border). One card at a time.</p>
+            <p><span class="tg-action">Flip</span> — With a card selected, tap a tile to flip it (costs that card).</p>
+            <p><span class="tg-action">Shift</span> — With a card selected, drag a tile onto an adjacent tile to swap them (costs that card).</p>
+            <p><span class="tg-action">Score</span> — Tap <em>SCORE</em> on any glowing card to collect its points.</p>
+            <p><span class="tg-action">Skip</span> — Draw 2 cards instead of acting. Ends your turn.</p>
+            <p><a class="info-link">ⓘ Full rules…</a></p>
+          </div>
+        </div>
+      </div><!-- /guide-panel -->
+    </div><!-- /game-side -->
+  </div><!-- /game-layout -->
+</div><!-- /#game -->
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 3b — GAME (Solo mode, shows strikes)                 -->
+<!-- ============================================================ -->
+<div id="game-solo" class="screen">
+  <div class="game-layout">
+
+    <div class="game-main">
+      <div class="game-topbar">
+        <div class="current-player-block">
+          <div class="cp-label">Solo Mode</div>
+          <div class="cp-name">Alex</div>
+        </div>
+        <div class="topbar-right">
+          <!-- Strikes block — solo only -->
+          <div class="strikes-block">
+            <span class="strikes-label">Strikes</span>
+            <div class="strike-pip on"></div>
+            <div class="strike-pip on"></div>
+            <div class="strike-pip"></div>
+            <div class="strike-pip"></div>
+          </div>
+          <div class="player-blocks">
+            <div class="player-block active">
+              <div class="pb-name">Alex</div>
+              <div class="pb-progress">9 / 16</div>
+              <div class="pb-pts">18 pts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="board-container">
+        <div class="board-grid">
+          <div class="tile tile-H">🌿</div>
+          <div class="tile tile-A">🌞</div>
+          <div class="tile tile-G">🪨</div>
+          <div class="tile tile-C">🐠</div>
+          <div class="tile tile-F">⛵</div>
+          <div class="tile tile-E">🐎</div>
+          <div class="tile tile-D">🦅</div>
+          <div class="tile tile-B">🌙</div>
+          <div class="tile tile-H">🌿</div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="act-btn">Skip &amp; Draw 2</button>
+        <button class="act-btn" disabled>↩ Undo</button>
+        <button class="act-btn" disabled>💡 Hint</button>
+        <button class="act-btn primary" disabled>End Turn</button>
+      </div>
+    </div>
+
+    <div class="game-side">
+      <div class="hand-label">Alex's Hand</div>
+      <div class="hand">
+
+        <div class="pcard scorable">
+          <div class="pcard-top">
+            <span class="pcard-pts">1</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
+            <div class="pcell pc-H">🌿</div>
+            <div class="pcell wc">—</div>
+          </div>
+        </div>
+
+        <div class="pcard scorable">
+          <div class="pcard-top">
+            <span class="pcard-pts">3</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-A">🌞</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-C">🐠</div>
+            <div class="pcell pc-F">⛵</div>
+            <div class="pcell pc-E">🐎</div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pcard-top">
+            <span class="pcard-pts">2</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
+            <div class="pcell pc-G">🪨</div>
+            <div class="pcell pc-A">🌞</div>
+          </div>
+        </div>
+
+        <div class="pcard">
+          <div class="pcard-top">
+            <span class="pcard-pts">5</span>
+            <button class="pcard-score-btn">SCORE</button>
+          </div>
+          <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
+            <div class="pcell pc-H">🌿</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-G">🪨</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-F">⛵</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-H">🌿</div>
+            <div class="pcell wc">—</div>
+            <div class="pcell pc-G">🪨</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="guide-panel">
+        <div class="guide-tabbar">
+          <button class="guide-tab-btn active" onclick="switchGuideTab(this,'stile')">Tile Guide</button>
+          <button class="guide-tab-btn"        onclick="switchGuideTab(this,'sturn')">Turn Guide</button>
+        </div>
+        <div id="stile" class="guide-pane active">
+          <div class="tile-guide-mini">
+            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div><div class="tpm-label">Sun / Moon</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div><div class="tpm-label">Fish / Bird</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div><div class="tpm-label">Horse / Sailboat</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div><div class="tpm-label">Rock / Leaf</div></div>
+          </div>
+        </div>
+        <div id="sturn" class="guide-pane">
+          <div class="turn-guide">
+            <p><span class="tg-action">Score</span> — You <strong>must</strong> score at least once per turn or gain a strike.</p>
+            <p><span class="tg-action">Flip</span> — Select a card, tap a tile to flip it.</p>
+            <p><span class="tg-action">Shift</span> — Select a card, drag a tile to an adjacent space.</p>
+            <p><span class="tg-action">Skip</span> — Draw 2 cards. Only if no actions taken &amp; cards remain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCREEN 4 — RESULTS                                          -->
+<!-- ============================================================ -->
+<div id="results" class="screen">
+  <div class="results-winner-block">
+    <div class="results-trophy">🏆</div>
+    <div class="results-crown-label">Winner</div>
+    <div class="results-winner-name">Alex</div>
+    <div class="results-winner-sub">14 points &nbsp;·&nbsp; 10 cards</div>
+  </div>
+
+  <div class="results-bonus">Alex earns the +3 bonus for most 1-point cards collected.</div>
+
+  <div class="results-card">
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Player</th>
+          <th>Points</th>
+          <th>Cards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-winner">
+          <td><span class="rank-badge r1">1</span></td>
+          <td>Alex</td>
+          <td>14 pts</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge r2">2</span></td>
+          <td>Jordan</td>
+          <td>9 pts</td>
+          <td>7</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button class="play-again-btn" onclick="showScreen('settings')">Play Again</button>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                      -->
+<!-- ============================================================ -->
+<script>
+  const SCREENS = ['splash','settings','game','game-solo','results'];
+
+  function showScreen(id) {
+    SCREENS.forEach(s => {
+      const el = document.getElementById(s);
+      if (el) el.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+
+    // highlight nav button
+    const idx = SCREENS.indexOf(id);
+    const navBtns = document.querySelectorAll('.nav-btn');
+    if (navBtns[idx]) navBtns[idx].classList.add('active');
+    // game-solo maps to 4th button (index 3)
+  }
+
+  function setPlayerCount(n, btn) {
+    btn.closest('.count-row').querySelectorAll('.count-btn')
+       .forEach((b,i) => b.classList.toggle('active', i+1 === n));
+    for (let i = 2; i <= 5; i++) {
+      const row = document.getElementById('prow' + i);
+      if (row) row.style.display = (i <= n) ? 'flex' : 'none';
+    }
+  }
+
+  function togglePlayerType(btn) {
+    const isHuman = !btn.classList.contains('ai');
+    btn.classList.toggle('ai', isHuman);
+    btn.textContent = isHuman ? '🤖 AI' : '👤 Human';
+  }
+
+  function switchSettingsTab(btn, paneId) {
+    const tabBar  = btn.closest('.tab-bar');
+    const tabBody = btn.closest('.settings-right');
+    tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    tabBody.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
+
+  function switchGuideTab(btn, paneId) {
+    const panel = btn.closest('.guide-panel');
+    panel.querySelectorAll('.guide-tab-btn').forEach(b => b.classList.remove('active'));
+    panel.querySelectorAll('.guide-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(paneId).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
