@@ -7,24 +7,48 @@
 <style>
 
 /* ===================================================
-   CSS VARIABLES & RESET
+   CSS VARIABLES
+   Tile colors (also used for pattern cells):
+     A  Pale Oyster            #9C8F7F
+     B  Volcanic Shadow Violet #7C6BA2
+     C  Rust Plateau Orange    #D2723E
+     D  Deep Pacific Blue      #336C96
+     E  Lava Shrub Red         #B94E3B
+     F  Sun-Bleached Ochre     #E2C06E
+     G  Shallow-Water Turquoise#4FBFB2
+     H  Opuntia Cactus Green   #88A86C
    =================================================== */
 :root {
-  --bg-deep:    #0a1628;
-  --bg-panel:   #122040;
-  --bg-card:    #1a3055;
-  --bg-tile:    #0d2035;
-  --gold:       #c9a84c;
-  --gold-light: #f0d080;
-  --teal:       #00c5c5;
-  --teal-glow:  rgba(0,197,197,0.35);
-  --red:        #e84040;
-  --text:       #e8dcc8;
-  --muted:      #8899aa;
-  --border:     rgba(200,180,120,0.2);
-  --shadow:     0 4px 20px rgba(0,0,0,0.5);
+  --bg-deep:    #062033;
+  --bg-panel:   #0a2840;
+  --bg-card:    #0d2f4a;
+  --bg-tile:    #081f33;
+
+  --gold:       #E2C06E;
+  --gold-light: #EDD08A;
+  --teal:       #4FBFB2;
+  --teal-glow:  rgba(79, 191, 178, 0.35);
+  --red:        #B94E3B;
+
+  --text:       #E0DBD2;
+  --muted:      #7a8fa0;
+  --border:     rgba(226, 192, 110, 0.18);
+  --shadow:     0 4px 20px rgba(0, 0, 0, 0.55);
+
+  /* Tile face colors */
+  --tile-A: #9C8F7F;
+  --tile-B: #7C6BA2;
+  --tile-C: #D2723E;
+  --tile-D: #336C96;
+  --tile-E: #B94E3B;
+  --tile-F: #E2C06E;
+  --tile-G: #4FBFB2;
+  --tile-H: #88A86C;
 }
 
+/* ===================================================
+   RESET
+   =================================================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
 body {
@@ -34,8 +58,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
-button { font-family: inherit; }
+button { font-family: inherit; cursor: pointer; }
 
 /* ===================================================
    MOCKUP NAV BAR
@@ -43,7 +66,7 @@ button { font-family: inherit; }
 #mockup-nav {
   position: fixed;
   top: 0; left: 0; right: 0;
-  background: rgba(5, 10, 20, 0.92);
+  background: rgba(4, 14, 26, 0.94);
   border-bottom: 1px solid var(--gold);
   display: flex;
   align-items: center;
@@ -66,13 +89,12 @@ button { font-family: inherit; }
   color: var(--muted);
   padding: 4px 12px;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 11px;
   transition: all 0.15s;
   white-space: nowrap;
 }
 .nav-btn:hover  { border-color: var(--gold); color: var(--gold); }
-.nav-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.12); }
+.nav-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(226,192,110,0.1); }
 
 /* ===================================================
    SCREEN CONTAINERS
@@ -91,23 +113,22 @@ button { font-family: inherit; }
 #splash {
   justify-content: center;
   align-items: center;
-  background: radial-gradient(ellipse at 50% 40%, #0d2e4a 0%, #0a1628 65%);
+  background: radial-gradient(ellipse at 50% 38%, #0a2840 0%, #062033 68%);
   position: relative;
-  gap: 0;
 }
 
 .splash-fauna {
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(28px, 5vw, 46px);
   letter-spacing: 10px;
   margin-bottom: 28px;
-  opacity: 0.65;
+  opacity: 0.55;
 }
 
 .splash-title {
   font-size: clamp(38px, 8vw, 80px);
   font-weight: 800;
   color: var(--gold-light);
-  text-shadow: 0 0 50px rgba(201,168,76,0.55);
+  text-shadow: 0 0 50px rgba(226,192,110,0.5);
   letter-spacing: 4px;
   text-align: center;
   line-height: 1.05;
@@ -130,8 +151,8 @@ button { font-family: inherit; }
 
 .splash-play {
   margin-top: 52px;
-  background: linear-gradient(135deg, #c9a84c, #f0d080);
-  color: #0a1628;
+  background: linear-gradient(135deg, #c9ad5a, #E2C06E);
+  color: #062033;
   border: none;
   padding: 18px 72px;
   font-size: 18px;
@@ -139,13 +160,12 @@ button { font-family: inherit; }
   letter-spacing: 4px;
   text-transform: uppercase;
   border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 0 36px rgba(201,168,76,0.4);
+  box-shadow: 0 0 36px rgba(226,192,110,0.35);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .splash-play:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 56px rgba(201,168,76,0.6);
+  box-shadow: 0 0 56px rgba(226,192,110,0.55);
 }
 
 .splash-version {
@@ -160,10 +180,7 @@ button { font-family: inherit; }
 /* ===================================================
    SCREEN 2 — SETTINGS
    =================================================== */
-#settings {
-  background: var(--bg-deep);
-  flex-direction: column;
-}
+#settings { background: var(--bg-deep); flex-direction: column; }
 
 .settings-header {
   text-align: center;
@@ -197,7 +214,7 @@ button { font-family: inherit; }
   overflow-y: auto;
 }
 
-.s-section-label {
+.s-label {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 2.5px;
@@ -205,11 +222,7 @@ button { font-family: inherit; }
   margin-bottom: 10px;
 }
 
-/* Player count buttons */
-.count-row {
-  display: flex;
-  gap: 8px;
-}
+.count-row { display: flex; gap: 8px; }
 .count-btn {
   flex: 1;
   padding: 11px 4px;
@@ -217,37 +230,30 @@ button { font-family: inherit; }
   border: 1px solid var(--border);
   color: var(--muted);
   border-radius: 7px;
-  cursor: pointer;
   font-size: 17px;
   font-weight: 700;
   transition: all 0.15s;
 }
 .count-btn.active {
-  background: rgba(201,168,76,0.14);
+  background: rgba(226,192,110,0.12);
   border-color: var(--gold);
   color: var(--gold);
 }
-.count-btn:hover:not(.active) { border-color: rgba(201,168,76,0.4); color: var(--text); }
+.count-btn:hover:not(.active) { border-color: rgba(226,192,110,0.35); color: var(--text); }
 
-/* Player rows */
 .player-inputs { display: flex; flex-direction: column; gap: 9px; }
-.player-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.player-row { display: flex; align-items: center; gap: 8px; }
 .player-num-badge {
   width: 26px; height: 26px;
   background: var(--gold);
-  color: #0a1628;
+  color: #062033;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 12px; font-weight: 800;
   flex-shrink: 0;
 }
 .player-name-input {
-  flex: 1;
-  min-width: 0;
+  flex: 1; min-width: 0;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   color: var(--text);
@@ -260,21 +266,20 @@ button { font-family: inherit; }
 .player-name-input:focus { border-color: var(--gold); }
 .type-toggle {
   background: var(--bg-panel);
-  border: 1px solid #4a9eff66;
-  color: #4a9eff;
+  border: 1px solid rgba(79,191,178,0.35);
+  color: var(--teal);
   padding: 6px 9px;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 11px;
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.15s;
 }
-.type-toggle.ai { border-color: #a050ff66; color: #a050ff; }
+.type-toggle.ai { border-color: rgba(124,107,162,0.5); color: #a080d0; }
 
 .settings-start {
-  background: linear-gradient(135deg, #c9a84c, #f0d080);
-  color: #0a1628;
+  background: linear-gradient(135deg, #c9ad5a, #E2C06E);
+  color: #062033;
   border: none;
   padding: 14px;
   font-size: 15px;
@@ -282,7 +287,6 @@ button { font-family: inherit; }
   letter-spacing: 3px;
   text-transform: uppercase;
   border-radius: 8px;
-  cursor: pointer;
   margin-top: auto;
   transition: opacity 0.15s;
 }
@@ -307,7 +311,6 @@ button { font-family: inherit; }
   border: none;
   border-bottom: 2px solid transparent;
   color: var(--muted);
-  cursor: pointer;
   font-size: 13px;
   transition: all 0.15s;
   white-space: nowrap;
@@ -317,16 +320,20 @@ button { font-family: inherit; }
 .tab-pane { display: none; padding: 20px 24px; overflow-y: auto; flex: 1; }
 .tab-pane.active { display: block; }
 
-/* Rules text */
 .rules-body { line-height: 1.75; font-size: 14px; }
-.rules-body h4 { color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 6px; }
+.rules-body h4 {
+  color: var(--gold);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 18px 0 6px;
+}
 .rules-body h4:first-child { margin-top: 0; }
 .rules-body ul { padding-left: 18px; }
-.rules-body li { margin-bottom: 5px; color: var(--text); }
-.rules-body p  { color: var(--text); }
+.rules-body li { margin-bottom: 5px; }
 .rules-body strong { color: var(--gold-light); }
 
-/* Tile guide (settings) */
+/* Tile guide — settings */
 .tile-guide-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -342,24 +349,23 @@ button { font-family: inherit; }
   align-items: center;
   gap: 10px;
 }
-.tile-pair-card .tile-icon {
-  text-align: center;
-}
+.tile-icon { text-align: center; }
 .swatch-lg {
   width: 46px; height: 46px;
   border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.1);
+  background-size: cover;
+  background-position: center;
 }
 .swatch-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
-.pair-arrow { font-size: 20px; color: var(--muted); flex-shrink: 0; }
+.pair-arrow { font-size: 18px; color: var(--muted); flex-shrink: 0; }
+.tile-count { font-size: 11px; color: var(--muted); margin-left: 6px; }
 
 
 /* ===================================================
    SCREEN 3 — GAME
    =================================================== */
-#game {
+#game, #game-solo {
   background: var(--bg-deep);
   flex-direction: column;
   height: 100vh;
@@ -373,7 +379,7 @@ button { font-family: inherit; }
   height: 100%;
 }
 
-/* ---- Main area (left ~65%) ---- */
+/* Main area */
 .game-main {
   flex: 2;
   display: flex;
@@ -384,7 +390,6 @@ button { font-family: inherit; }
   min-width: 0;
 }
 
-/* Top bar */
 .game-topbar {
   display: flex;
   align-items: flex-start;
@@ -415,13 +420,13 @@ button { font-family: inherit; }
   justify-content: flex-end;
 }
 
-/* Strikes */
+/* Strikes block */
 .strikes-block {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: rgba(232,64,64,0.1);
-  border: 1px solid rgba(232,64,64,0.3);
+  background: rgba(185,78,59,0.1);
+  border: 1px solid rgba(185,78,59,0.3);
   border-radius: 7px;
   padding: 6px 10px;
 }
@@ -444,7 +449,7 @@ button { font-family: inherit; }
   text-align: center;
   min-width: 76px;
 }
-.player-block.active { border-color: var(--gold); box-shadow: 0 0 10px rgba(201,168,76,0.2); }
+.player-block.active { border-color: var(--gold); box-shadow: 0 0 10px rgba(226,192,110,0.18); }
 .pb-name { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 74px; }
 .pb-progress { font-size: 19px; font-weight: 700; }
 .pb-pts { font-size: 11px; color: var(--teal); }
@@ -469,30 +474,30 @@ button { font-family: inherit; }
   width: 100%;
 }
 
+/* Board tiles — images fill the tile */
 .tile {
   border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(22px, 4vw, 44px);
-  border: 2px solid rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.1);
   cursor: pointer;
   user-select: none;
   transition: transform 0.12s, box-shadow 0.12s;
-  box-shadow: inset 0 0 18px rgba(0,0,0,0.35), 0 3px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.45);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   aspect-ratio: 1;
 }
-.tile:hover { transform: scale(1.06); box-shadow: 0 0 18px rgba(255,255,255,0.18); }
+.tile:hover { transform: scale(1.06); box-shadow: 0 0 18px rgba(255,255,255,0.15); }
 .tile.selected-tile { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-.tile-A { background: linear-gradient(135deg, #f7c800, #e08a00); }
-.tile-B { background: linear-gradient(135deg, #1c1c42, #2e2e60); border-color: rgba(160,130,255,0.3); }
-.tile-C { background: linear-gradient(135deg, #ff8c00, #cc5a00); }
-.tile-D { background: linear-gradient(135deg, #cc1030, #800010); }
-.tile-E { background: linear-gradient(135deg, #6b2d8b, #3e1555); }
-.tile-F { background: linear-gradient(135deg, #1e8fff, #0040a0); }
-.tile-G { background: linear-gradient(135deg, #6d7d8e, #3e4e5e); }
-.tile-H { background: linear-gradient(135deg, #1e8a20, #0d4510); }
+.tile-A { background-image: url('images/a.png'); }
+.tile-B { background-image: url('images/b.png'); }
+.tile-C { background-image: url('images/c.png'); }
+.tile-D { background-image: url('images/d.png'); }
+.tile-E { background-image: url('images/e.png'); }
+.tile-F { background-image: url('images/f.png'); }
+.tile-G { background-image: url('images/g.png'); }
+.tile-H { background-image: url('images/h.png'); }
 
 /* Action buttons */
 .action-bar {
@@ -508,7 +513,6 @@ button { font-family: inherit; }
   border: 1px solid var(--border);
   background: var(--bg-panel);
   color: var(--text);
-  cursor: pointer;
   font-size: 13px;
   font-weight: 500;
   transition: all 0.15s;
@@ -516,14 +520,14 @@ button { font-family: inherit; }
 .act-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
 .act-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .act-btn.primary {
-  background: linear-gradient(135deg, #c9a84c, #f0d080);
-  color: #0a1628;
+  background: linear-gradient(135deg, #c9ad5a, #E2C06E);
+  color: #062033;
   border-color: transparent;
   font-weight: 700;
 }
 .act-btn.primary:disabled { opacity: 0.35; }
 
-/* ---- Side area (right ~35%) ---- */
+/* Side area */
 .game-side {
   flex: 1;
   display: flex;
@@ -556,11 +560,10 @@ button { font-family: inherit; }
   border: 2px solid var(--border);
   border-radius: 10px;
   padding: 8px;
-  cursor: pointer;
   transition: border-color 0.15s, box-shadow 0.15s;
   position: relative;
 }
-.pcard:hover { border-color: rgba(201,168,76,0.45); }
+.pcard:hover { border-color: rgba(226,192,110,0.4); }
 .pcard.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
 .pcard.scorable {
   border-color: var(--teal);
@@ -576,19 +579,18 @@ button { font-family: inherit; }
 .pcard-pts { font-size: 17px; font-weight: 800; color: var(--gold); }
 .pcard-score-btn {
   background: var(--teal);
-  color: #0a1628;
+  color: #062033;
   border: none;
   border-radius: 4px;
   padding: 2px 7px;
   font-size: 10px;
   font-weight: 800;
-  cursor: pointer;
   letter-spacing: 0.5px;
   display: none;
 }
 .pcard.scorable .pcard-score-btn { display: block; }
 
-/* Pattern grid inside card */
+/* Pattern grid — color only, no image or emoji */
 .pgrid {
   display: grid;
   gap: 3px;
@@ -598,19 +600,18 @@ button { font-family: inherit; }
 .pcell {
   width: 20px; height: 20px;
   border-radius: 3px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
 }
-.pcell.wc { background: rgba(255,255,255,0.07); color: var(--muted); font-size: 9px; }
-.pc-A { background: rgba(247,200,0,0.65); }
-.pc-B { background: rgba(28,28,66,0.9); }
-.pc-C { background: rgba(255,140,0,0.65); }
-.pc-D { background: rgba(204,16,48,0.65); }
-.pc-E { background: rgba(107,45,139,0.65); }
-.pc-F { background: rgba(30,143,255,0.65); }
-.pc-G { background: rgba(109,125,142,0.65); }
-.pc-H { background: rgba(30,138,32,0.65); }
+.pcell.wc { background: rgba(255,255,255,0.06); }
+
+.pc-A { background: var(--tile-A); }
+.pc-B { background: var(--tile-B); }
+.pc-C { background: var(--tile-C); }
+.pc-D { background: var(--tile-D); }
+.pc-E { background: var(--tile-E); }
+.pc-F { background: var(--tile-F); }
+.pc-G { background: var(--tile-G); }
+.pc-H { background: var(--tile-H); }
 
 /* Guide tabs */
 .guide-panel {
@@ -634,7 +635,6 @@ button { font-family: inherit; }
   border: none;
   border-bottom: 2px solid transparent;
   color: var(--muted);
-  cursor: pointer;
   font-size: 12px;
   transition: all 0.15s;
 }
@@ -642,7 +642,7 @@ button { font-family: inherit; }
 .guide-pane { display: none; padding: 10px; overflow-y: auto; flex: 1; }
 .guide-pane.active { display: block; }
 
-/* Mini tile guide */
+/* Mini tile guide — in-game */
 .tile-guide-mini { display: flex; flex-direction: column; gap: 5px; }
 .tpm {
   display: flex;
@@ -655,8 +655,9 @@ button { font-family: inherit; }
 .swatch-sm {
   width: 26px; height: 26px;
   border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background-size: cover;
+  background-position: center;
   flex-shrink: 0;
 }
 .tpm-arrow { color: var(--muted); font-size: 12px; flex-shrink: 0; }
@@ -666,17 +667,16 @@ button { font-family: inherit; }
 .turn-guide { font-size: 12px; line-height: 1.65; }
 .turn-guide .tg-action { color: var(--gold); font-weight: 700; }
 .turn-guide p { margin-bottom: 7px; }
-.turn-guide .info-link { color: var(--teal); text-decoration: underline; cursor: pointer; font-size: 11px; }
+.turn-guide .info-link { color: var(--teal); text-decoration: underline; font-size: 11px; }
 
 
 /* ===================================================
    SCREEN 4 — RESULTS
    =================================================== */
 #results {
-  background: radial-gradient(ellipse at 50% 35%, #0d2e4a 0%, #0a1628 65%);
+  background: radial-gradient(ellipse at 50% 35%, #0a2840 0%, #062033 65%);
   align-items: center;
   padding: 32px 20px 40px;
-  gap: 0;
 }
 
 .results-winner-block { text-align: center; margin-bottom: 30px; }
@@ -691,12 +691,17 @@ button { font-family: inherit; }
   font-size: clamp(30px, 6vw, 56px);
   font-weight: 800;
   color: var(--gold-light);
-  text-shadow: 0 0 40px rgba(201,168,76,0.55);
+  text-shadow: 0 0 40px rgba(226,192,110,0.5);
   letter-spacing: 2px;
 }
 .results-winner-sub { font-size: 16px; color: var(--teal); margin-top: 4px; }
 
-.results-bonus { font-size: 12px; color: var(--muted); margin-bottom: 24px; font-style: italic; }
+.results-bonus {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  font-style: italic;
+}
 
 .results-card {
   width: 100%;
@@ -716,11 +721,11 @@ button { font-family: inherit; }
   letter-spacing: 2px;
   color: var(--muted);
   border-bottom: 1px solid var(--border);
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.18);
 }
 .results-table td {
   padding: 13px 16px;
-  border-bottom: 1px solid rgba(200,180,120,0.07);
+  border-bottom: 1px solid rgba(226,192,110,0.06);
   font-size: 15px;
 }
 .results-table tr:last-child td { border-bottom: none; }
@@ -736,13 +741,13 @@ button { font-family: inherit; }
   background: var(--bg-tile);
   color: var(--muted);
 }
-.rank-badge.r1 { background: var(--gold); color: #0a1628; }
-.rank-badge.r2 { background: #9e9e9e; color: #0a1628; }
-.rank-badge.r3 { background: #a05030; color: #fff; }
+.rank-badge.r1 { background: var(--gold); color: #062033; }
+.rank-badge.r2 { background: #888; color: #062033; }
+.rank-badge.r3 { background: #7C6BA2; color: #fff; }
 
 .play-again-btn {
-  background: linear-gradient(135deg, #c9a84c, #f0d080);
-  color: #0a1628;
+  background: linear-gradient(135deg, #c9ad5a, #E2C06E);
+  color: #062033;
   border: none;
   padding: 15px 52px;
   font-size: 15px;
@@ -750,27 +755,26 @@ button { font-family: inherit; }
   letter-spacing: 3px;
   text-transform: uppercase;
   border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 0 28px rgba(201,168,76,0.3);
+  box-shadow: 0 0 28px rgba(226,192,110,0.28);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .play-again-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 44px rgba(201,168,76,0.5);
+  box-shadow: 0 0 44px rgba(226,192,110,0.48);
 }
 
 
 /* ===================================================
-   RESPONSIVE — PORTRAIT / MOBILE
+   RESPONSIVE
    =================================================== */
 @media (max-width: 700px) {
-  .game-layout    { flex-direction: column; }
-  .game-main      { border-right: none; border-bottom: 1px solid var(--border); flex: none; }
-  .game-side      { flex: none; max-height: 55vh; }
-  .hand           { grid-template-columns: repeat(3, 1fr); }
-  .board-grid     { max-height: 260px; }
-  .settings-body  { flex-direction: column; }
-  .settings-left  { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .game-layout   { flex-direction: column; }
+  .game-main     { border-right: none; border-bottom: 1px solid var(--border); flex: none; }
+  .game-side     { flex: none; max-height: 55vh; }
+  .hand          { grid-template-columns: repeat(3, 1fr); }
+  .board-grid    { max-height: 260px; }
+  .settings-body { flex-direction: column; }
+  .settings-left { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
   .tile-guide-grid { grid-template-columns: 1fr; }
 }
 
@@ -779,15 +783,15 @@ button { font-family: inherit; }
 <body>
 
 <!-- ============================================================ -->
-<!-- MOCKUP NAVIGATION                                            -->
+<!-- MOCKUP NAV                                                   -->
 <!-- ============================================================ -->
 <nav id="mockup-nav">
   <span class="nav-label">Mockup</span>
-  <button class="nav-btn active" onclick="showScreen('splash')">① Splash</button>
-  <button class="nav-btn"        onclick="showScreen('settings')">② Settings</button>
-  <button class="nav-btn"        onclick="showScreen('game')">③ Game</button>
-  <button class="nav-btn"        onclick="showScreen('game-solo')">③b Game (Solo)</button>
-  <button class="nav-btn"        onclick="showScreen('results')">④ Results</button>
+  <button class="nav-btn active"  onclick="showScreen('splash')">① Splash</button>
+  <button class="nav-btn"         onclick="showScreen('settings')">② Settings</button>
+  <button class="nav-btn"         onclick="showScreen('game')">③ Game</button>
+  <button class="nav-btn"         onclick="showScreen('game-solo')">③b Game (Solo)</button>
+  <button class="nav-btn"         onclick="showScreen('results')">④ Results</button>
 </nav>
 
 
@@ -808,16 +812,14 @@ button { font-family: inherit; }
 <!-- SCREEN 2 — SETTINGS                                         -->
 <!-- ============================================================ -->
 <div id="settings" class="screen">
-  <div class="settings-header">
-    <h2>Game Setup</h2>
-  </div>
+  <div class="settings-header"><h2>Game Setup</h2></div>
   <div class="settings-body">
 
     <!-- Left: player config -->
     <div class="settings-left">
 
       <div>
-        <div class="s-section-label">Number of Players</div>
+        <div class="s-label">Number of Players</div>
         <div class="count-row">
           <button class="count-btn"        onclick="setPlayerCount(1,this)">1</button>
           <button class="count-btn active" onclick="setPlayerCount(2,this)">2</button>
@@ -828,7 +830,7 @@ button { font-family: inherit; }
       </div>
 
       <div>
-        <div class="s-section-label">Players</div>
+        <div class="s-label">Players</div>
         <div class="player-inputs">
           <div class="player-row" id="prow1">
             <div class="player-num-badge">1</div>
@@ -872,23 +874,18 @@ button { font-family: inherit; }
         <div class="rules-body">
           <h4>Objective</h4>
           <p>Score the most points by matching tile patterns to cards in your hand.</p>
-
           <h4>Turn Actions</h4>
           <ul>
             <li><strong>Shift:</strong> Discard 1 card to swap two adjacent tiles (no diagonals).</li>
             <li><strong>Flip:</strong> Discard 1 card to flip a tile to its opposite side.</li>
-            <li><strong>Score:</strong> Play a card whose pattern matches the current board. Collect its points.</li>
-            <li><strong>Skip:</strong> Draw 2 cards (max 6 in hand). Ends your turn immediately. Cannot skip two turns in a row.</li>
+            <li><strong>Score:</strong> Play a card whose pattern matches the current board.</li>
+            <li><strong>Skip:</strong> Draw 2 cards (max 6). Ends your turn. Cannot skip two turns in a row.</li>
           </ul>
-
           <h4>End of Turn</h4>
           <p>Draw back up to 4 cards. Pass the device to the next player.</p>
-
           <h4>Winning</h4>
-          <p>Endgame triggers when any player collects enough cards. Each remaining player gets one more turn, then scores are tallied.</p>
-          <p><strong>Bonus:</strong> Player(s) with the most 1-point cards earn +3 points.</p>
-
-          <h4>Card Thresholds to Trigger Endgame</h4>
+          <p>Endgame triggers when any player reaches the card threshold. All players finish the round, then scores are tallied. <strong>Bonus:</strong> most 1-pt cards = +3 pts.</p>
+          <h4>Card Thresholds</h4>
           <ul>
             <li>2 players — 10 cards</li>
             <li>3 players — 9 cards</li>
@@ -901,100 +898,93 @@ button { font-family: inherit; }
       <div id="stab-solo" class="tab-pane">
         <div class="rules-body">
           <h4>Setup</h4>
-          <p>Use a custom 16-card mini-deck: 8×1pt, 4×2pt, 3×3pt, 1×5pt. Draw 4 cards to start.</p>
-
+          <p>16-card mini-deck: 8×1pt, 4×2pt, 3×3pt, 1×5pt. Draw 4 to start.</p>
           <h4>Strike Mechanic</h4>
-          <p>You <em>must</em> score at least one card each turn. If you end your turn without scoring, you gain 1 strike.</p>
-
+          <p>You must score at least one card each turn. Failing to score earns a strike.</p>
           <h4>Actions</h4>
           <ul>
-            <li><strong>Shift / Flip / Score:</strong> Same rules as multiplayer.</li>
-            <li><strong>Skip:</strong> Draw 2 cards. Only allowed if it's your first action, you have ≤ 4 cards, you didn't skip last turn, and cards are available.</li>
+            <li><strong>Shift / Flip / Score:</strong> Same as multiplayer.</li>
+            <li><strong>Skip:</strong> Draw 2 cards only if it's your first action, you have ≤ 4 cards, you didn't skip last turn, and cards are available.</li>
           </ul>
-
           <h4>Winning &amp; Losing</h4>
           <ul>
-            <li>🏆 <strong>Win:</strong> Score all 16 cards before your 4th strike.</li>
+            <li>🏆 <strong>Win:</strong> Score all 16 cards.</li>
             <li>💀 <strong>Lose:</strong> Accumulate 4 strikes.</li>
           </ul>
         </div>
       </div>
 
       <div id="stab-tiles" class="tab-pane">
-        <div class="s-section-label" style="margin-bottom:14px">
-          Each tile is double-sided. Flipping a tile reveals its other face.
-        </div>
+        <div class="s-label" style="margin-bottom:14px">Each tile is double-sided. Flipping reveals the other face.</div>
         <div class="tile-guide-grid">
 
           <div class="tile-pair-card">
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div>
-              <div class="swatch-label">A – Sun</div>
+              <div class="swatch-lg" style="background-image:url('images/a.png')"></div>
+              <div class="swatch-label">A – Pale Oyster</div>
             </div>
             <div class="pair-arrow">⇄</div>
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div>
-              <div class="swatch-label">B – Moon</div>
+              <div class="swatch-lg" style="background-image:url('images/b.png')"></div>
+              <div class="swatch-label">B – Shadow Violet</div>
             </div>
-            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 1 tile</div>
+            <div class="tile-count">×1</div>
           </div>
 
           <div class="tile-pair-card">
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div>
-              <div class="swatch-label">C – Fish</div>
+              <div class="swatch-lg" style="background-image:url('images/c.png')"></div>
+              <div class="swatch-label">C – Plateau Orange</div>
             </div>
             <div class="pair-arrow">⇄</div>
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div>
-              <div class="swatch-label">D – Bird</div>
+              <div class="swatch-lg" style="background-image:url('images/d.png')"></div>
+              <div class="swatch-label">D – Pacific Blue</div>
             </div>
-            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 2 tiles</div>
+            <div class="tile-count">×2</div>
           </div>
 
           <div class="tile-pair-card">
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div>
-              <div class="swatch-label">E – Horse</div>
+              <div class="swatch-lg" style="background-image:url('images/e.png')"></div>
+              <div class="swatch-label">E – Lava Shrub Red</div>
             </div>
             <div class="pair-arrow">⇄</div>
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div>
-              <div class="swatch-label">F – Sailboat</div>
+              <div class="swatch-lg" style="background-image:url('images/f.png')"></div>
+              <div class="swatch-label">F – Bleached Ochre</div>
             </div>
-            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 3 tiles</div>
+            <div class="tile-count">×3</div>
           </div>
 
           <div class="tile-pair-card">
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div>
-              <div class="swatch-label">G – Rock</div>
+              <div class="swatch-lg" style="background-image:url('images/g.png')"></div>
+              <div class="swatch-label">G – Shallow Turquoise</div>
             </div>
             <div class="pair-arrow">⇄</div>
             <div class="tile-icon">
-              <div class="swatch-lg" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div>
-              <div class="swatch-label">H – Leaf</div>
+              <div class="swatch-lg" style="background-image:url('images/h.png')"></div>
+              <div class="swatch-label">H – Opuntia Green</div>
             </div>
-            <div style="margin-left:6px;font-size:11px;color:var(--muted)">× 3 tiles</div>
+            <div class="tile-count">×3</div>
           </div>
 
         </div>
       </div>
-    </div>
-  </div>
-</div>
+    </div><!-- /settings-right -->
+  </div><!-- /settings-body -->
+</div><!-- /#settings -->
 
 
 <!-- ============================================================ -->
-<!-- SCREEN 3 — GAME (Multiplayer, landscape)                    -->
+<!-- SCREEN 3 — GAME (Multiplayer)                               -->
 <!-- ============================================================ -->
 <div id="game" class="screen">
   <div class="game-layout">
 
     <!-- MAIN AREA -->
     <div class="game-main">
-
-      <!-- Top bar -->
       <div class="game-topbar">
         <div class="current-player-block">
           <div class="cp-label">Current Player</div>
@@ -1016,58 +1006,56 @@ button { font-family: inherit; }
         </div>
       </div>
 
-      <!-- Board -->
       <div class="board-container">
         <div class="board-grid">
-          <div class="tile tile-A">🌞</div>
-          <div class="tile tile-C">🐠</div>
-          <div class="tile tile-B">🌙</div>
-          <div class="tile tile-F">⛵</div>
-          <div class="tile tile-G">🪨</div>
-          <div class="tile tile-D">🦅</div>
-          <div class="tile tile-H">🌿</div>
-          <div class="tile tile-E">🐎</div>
-          <div class="tile tile-H">🌿</div>
+          <div class="tile tile-A"></div>
+          <div class="tile tile-C"></div>
+          <div class="tile tile-B"></div>
+          <div class="tile tile-F"></div>
+          <div class="tile tile-G"></div>
+          <div class="tile tile-D"></div>
+          <div class="tile tile-H"></div>
+          <div class="tile tile-E"></div>
+          <div class="tile tile-H"></div>
         </div>
       </div>
 
-      <!-- Action buttons -->
       <div class="action-bar">
         <button class="act-btn" disabled>Skip &amp; Draw 2</button>
         <button class="act-btn" disabled>↩ Undo</button>
         <button class="act-btn" disabled>💡 Hint</button>
         <button class="act-btn primary" disabled>End Turn</button>
       </div>
-    </div>
+    </div><!-- /game-main -->
 
     <!-- SIDE AREA -->
     <div class="game-side">
       <div class="hand-label">Alex's Hand</div>
       <div class="hand">
 
-        <!-- Card 1: 1pt · 1×2 · scorable (teal glow) -->
+        <!-- Card 1: 1pt · 1×2 · scorable -->
         <div class="pcard scorable">
           <div class="pcard-top">
             <span class="pcard-pts">1</span>
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
-            <div class="pcell pc-C">🐠</div>
-            <div class="pcell wc">—</div>
+            <div class="pcell pc-C"></div>
+            <div class="pcell wc"></div>
           </div>
         </div>
 
-        <!-- Card 2: 2pt · 2×2 · selected (gold border) -->
+        <!-- Card 2: 2pt · 2×2 · selected -->
         <div class="pcard selected">
           <div class="pcard-top">
             <span class="pcard-pts">2</span>
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
-            <div class="pcell pc-A">🌞</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-E">🐎</div>
+            <div class="pcell pc-A"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-E"></div>
           </div>
         </div>
 
@@ -1078,9 +1066,9 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-G">🪨</div>
-            <div class="pcell wc">—</div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-G"></div>
+            <div class="pcell wc"></div>
           </div>
         </div>
 
@@ -1091,10 +1079,10 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
-            <div class="pcell pc-F">⛵</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-C">🐠</div>
-            <div class="pcell wc">—</div>
+            <div class="pcell pc-F"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-C"></div>
+            <div class="pcell wc"></div>
           </div>
         </div>
 
@@ -1110,38 +1098,38 @@ button { font-family: inherit; }
         <div id="gtile" class="guide-pane active">
           <div class="tile-guide-mini">
             <div class="tpm">
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div>
+              <div class="swatch-sm" style="background-image:url('images/a.png')"></div>
               <div class="tpm-arrow">⇄</div>
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div>
-              <div class="tpm-label">Sun / Moon</div>
+              <div class="swatch-sm" style="background-image:url('images/b.png')"></div>
+              <div class="tpm-label">Pale Oyster / Shadow Violet</div>
             </div>
             <div class="tpm">
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div>
+              <div class="swatch-sm" style="background-image:url('images/c.png')"></div>
               <div class="tpm-arrow">⇄</div>
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div>
-              <div class="tpm-label">Fish / Bird</div>
+              <div class="swatch-sm" style="background-image:url('images/d.png')"></div>
+              <div class="tpm-label">Plateau Orange / Pacific Blue</div>
             </div>
             <div class="tpm">
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div>
+              <div class="swatch-sm" style="background-image:url('images/e.png')"></div>
               <div class="tpm-arrow">⇄</div>
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div>
-              <div class="tpm-label">Horse / Sailboat</div>
+              <div class="swatch-sm" style="background-image:url('images/f.png')"></div>
+              <div class="tpm-label">Lava Red / Bleached Ochre</div>
             </div>
             <div class="tpm">
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div>
+              <div class="swatch-sm" style="background-image:url('images/g.png')"></div>
               <div class="tpm-arrow">⇄</div>
-              <div class="swatch-sm" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div>
-              <div class="tpm-label">Rock / Leaf</div>
+              <div class="swatch-sm" style="background-image:url('images/h.png')"></div>
+              <div class="tpm-label">Shallow Turquoise / Opuntia Green</div>
             </div>
           </div>
         </div>
 
         <div id="gturn" class="guide-pane">
           <div class="turn-guide">
-            <p><span class="tg-action">Select Card</span> — Tap a card to select it (gold border). One card at a time.</p>
+            <p><span class="tg-action">Select Card</span> — Tap a card to select it (highlighted border). One at a time.</p>
             <p><span class="tg-action">Flip</span> — With a card selected, tap a tile to flip it (costs that card).</p>
-            <p><span class="tg-action">Shift</span> — With a card selected, drag a tile onto an adjacent tile to swap them (costs that card).</p>
-            <p><span class="tg-action">Score</span> — Tap <em>SCORE</em> on any glowing card to collect its points.</p>
+            <p><span class="tg-action">Shift</span> — With a card selected, drag a tile onto an adjacent tile to swap them.</p>
+            <p><span class="tg-action">Score</span> — Tap SCORE on any glowing card to collect its points.</p>
             <p><span class="tg-action">Skip</span> — Draw 2 cards instead of acting. Ends your turn.</p>
             <p><a class="info-link">ⓘ Full rules…</a></p>
           </div>
@@ -1153,7 +1141,7 @@ button { font-family: inherit; }
 
 
 <!-- ============================================================ -->
-<!-- SCREEN 3b — GAME (Solo mode, shows strikes)                 -->
+<!-- SCREEN 3b — GAME (Solo, shows strikes)                      -->
 <!-- ============================================================ -->
 <div id="game-solo" class="screen">
   <div class="game-layout">
@@ -1165,7 +1153,6 @@ button { font-family: inherit; }
           <div class="cp-name">Alex</div>
         </div>
         <div class="topbar-right">
-          <!-- Strikes block — solo only -->
           <div class="strikes-block">
             <span class="strikes-label">Strikes</span>
             <div class="strike-pip on"></div>
@@ -1185,15 +1172,15 @@ button { font-family: inherit; }
 
       <div class="board-container">
         <div class="board-grid">
-          <div class="tile tile-H">🌿</div>
-          <div class="tile tile-A">🌞</div>
-          <div class="tile tile-G">🪨</div>
-          <div class="tile tile-C">🐠</div>
-          <div class="tile tile-F">⛵</div>
-          <div class="tile tile-E">🐎</div>
-          <div class="tile tile-D">🦅</div>
-          <div class="tile tile-B">🌙</div>
-          <div class="tile tile-H">🌿</div>
+          <div class="tile tile-H"></div>
+          <div class="tile tile-A"></div>
+          <div class="tile tile-G"></div>
+          <div class="tile tile-C"></div>
+          <div class="tile tile-F"></div>
+          <div class="tile tile-E"></div>
+          <div class="tile tile-D"></div>
+          <div class="tile tile-B"></div>
+          <div class="tile tile-H"></div>
         </div>
       </div>
 
@@ -1215,8 +1202,8 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
-            <div class="pcell pc-H">🌿</div>
-            <div class="pcell wc">—</div>
+            <div class="pcell pc-H"></div>
+            <div class="pcell wc"></div>
           </div>
         </div>
 
@@ -1226,12 +1213,12 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-A">🌞</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-C">🐠</div>
-            <div class="pcell pc-F">⛵</div>
-            <div class="pcell pc-E">🐎</div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-A"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-C"></div>
+            <div class="pcell pc-F"></div>
+            <div class="pcell pc-E"></div>
           </div>
         </div>
 
@@ -1241,8 +1228,8 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(2,20px)">
-            <div class="pcell pc-G">🪨</div>
-            <div class="pcell pc-A">🌞</div>
+            <div class="pcell pc-G"></div>
+            <div class="pcell pc-A"></div>
           </div>
         </div>
 
@@ -1252,19 +1239,19 @@ button { font-family: inherit; }
             <button class="pcard-score-btn">SCORE</button>
           </div>
           <div class="pgrid" style="grid-template-columns:repeat(3,20px)">
-            <div class="pcell pc-H">🌿</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-G">🪨</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-F">⛵</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-H">🌿</div>
-            <div class="pcell wc">—</div>
-            <div class="pcell pc-G">🪨</div>
+            <div class="pcell pc-H"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-G"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-F"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-H"></div>
+            <div class="pcell wc"></div>
+            <div class="pcell pc-G"></div>
           </div>
         </div>
 
-      </div>
+      </div><!-- /hand -->
 
       <div class="guide-panel">
         <div class="guide-tabbar">
@@ -1273,10 +1260,10 @@ button { font-family: inherit; }
         </div>
         <div id="stile" class="guide-pane active">
           <div class="tile-guide-mini">
-            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#f7c800,#e08a00)">🌞</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1c1c42,#2e2e60)">🌙</div><div class="tpm-label">Sun / Moon</div></div>
-            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#ff8c00,#cc5a00)">🐠</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#cc1030,#800010)">🦅</div><div class="tpm-label">Fish / Bird</div></div>
-            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#6b2d8b,#3e1555)">🐎</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1e8fff,#0040a0)">⛵</div><div class="tpm-label">Horse / Sailboat</div></div>
-            <div class="tpm"><div class="swatch-sm" style="background:linear-gradient(135deg,#6d7d8e,#3e4e5e)">🪨</div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background:linear-gradient(135deg,#1e8a20,#0d4510)">🌿</div><div class="tpm-label">Rock / Leaf</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/a.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/b.png')"></div><div class="tpm-label">Pale Oyster / Shadow Violet</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/c.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/d.png')"></div><div class="tpm-label">Plateau Orange / Pacific Blue</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/e.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/f.png')"></div><div class="tpm-label">Lava Red / Bleached Ochre</div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/g.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/h.png')"></div><div class="tpm-label">Shallow Turquoise / Opuntia Green</div></div>
           </div>
         </div>
         <div id="sturn" class="guide-pane">
@@ -1290,7 +1277,7 @@ button { font-family: inherit; }
       </div>
     </div>
   </div>
-</div>
+</div><!-- /#game-solo -->
 
 
 <!-- ============================================================ -->
@@ -1334,14 +1321,14 @@ button { font-family: inherit; }
   </div>
 
   <button class="play-again-btn" onclick="showScreen('settings')">Play Again</button>
-</div>
+</div><!-- /#results -->
 
 
 <!-- ============================================================ -->
 <!-- SCRIPTS                                                      -->
 <!-- ============================================================ -->
 <script>
-  const SCREENS = ['splash','settings','game','game-solo','results'];
+  const SCREENS = ['splash', 'settings', 'game', 'game-solo', 'results'];
 
   function showScreen(id) {
     SCREENS.forEach(s => {
@@ -1349,20 +1336,16 @@ button { font-family: inherit; }
       if (el) el.classList.remove('active');
     });
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
-
-    // highlight nav button
     const idx = SCREENS.indexOf(id);
-    const navBtns = document.querySelectorAll('.nav-btn');
-    if (navBtns[idx]) navBtns[idx].classList.add('active');
-    // game-solo maps to 4th button (index 3)
+    const btns = document.querySelectorAll('.nav-btn');
+    if (btns[idx]) btns[idx].classList.add('active');
   }
 
   function setPlayerCount(n, btn) {
     btn.closest('.count-row').querySelectorAll('.count-btn')
-       .forEach((b,i) => b.classList.toggle('active', i+1 === n));
+       .forEach((b, i) => b.classList.toggle('active', i + 1 === n));
     for (let i = 2; i <= 5; i++) {
       const row = document.getElementById('prow' + i);
       if (row) row.style.display = (i <= n) ? 'flex' : 'none';
@@ -1376,10 +1359,10 @@ button { font-family: inherit; }
   }
 
   function switchSettingsTab(btn, paneId) {
-    const tabBar  = btn.closest('.tab-bar');
-    const tabBody = btn.closest('.settings-right');
-    tabBar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    tabBody.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    const bar  = btn.closest('.tab-bar');
+    const body = btn.closest('.settings-right');
+    bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    body.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById(paneId).classList.add('active');
   }
