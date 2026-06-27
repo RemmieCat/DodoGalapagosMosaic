@@ -264,6 +264,7 @@ function doSkip(state) {
     players: next.players.map((p, i) =>
       i === idx ? { ...p, skippedLastTurn: true } : p
     ),
+    strikes:        next.mode === 'solo' ? next.strikes + 1 : next.strikes,
     turnActed:      true,
     scoredThisTurn: false,
   };

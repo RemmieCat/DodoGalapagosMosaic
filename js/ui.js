@@ -3,6 +3,7 @@
 // ── UI state ───────────────────────────────────────────────────────────────
 let _selectedCardIdx = null;   // hand index of selected card, or null
 let _shiftSourceIdx  = null;   // tile index of primed tile, or null
+let _animating       = false;  // blocks input during animations
 
 // ── Utilities ──────────────────────────────────────────────────────────────
 function _el(id)  { return document.getElementById(id); }
@@ -233,9 +234,13 @@ function showPassOverlay(playerName, onReady) {
       <button class="pass-overlay-btn">I'm ready</button>
     </div>`;
   document.body.appendChild(overlay);
+
+  // Fade in (double rAF ensures transition picks up from opacity:0)
+  requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('pass-overlay-in')));
+
   overlay.querySelector('.pass-overlay-btn').addEventListener('click', () => {
-    overlay.remove();
-    onReady();
+    overlay.classList.remove('pass-overlay-in');
+    setTimeout(() => { overlay.remove(); onReady(); }, 290);
   });
 }
 
@@ -248,6 +253,7 @@ function _onSkip() {
   _clearInteraction();
   setState(next);
   _afterAction(next);
+  if (next.mode === 'solo' && next.strikes > s.strikes) animateStrikeFlash();
 }
 
 function _onEndTurn() {
@@ -259,6 +265,7 @@ function _onEndTurn() {
     _clearInteraction();
     setState(next);
     _afterAction(next);
+    if (next.mode === 'solo' && next.strikes > s.strikes) animateStrikeFlash();
   } catch(e) {
     console.error('[_onEndTurn]', e);
     popHistory();
@@ -272,15 +279,29 @@ function _onUndo() {
 }
 
 function _onScore(cardIdx) {
+  if (_animating) return;
   const s = getState();
   pushHistory();
   const next = doScore(s, cardIdx);
   if (!next) { popHistory(); return; }
-  if (_selectedCardIdx === cardIdx) _selectedCardIdx = null;
+
+  const cardEl = document.querySelector(`[data-card-idx="${cardIdx}"]`);
+  const pts    = s.players[s.currentPlayerIndex].hand[cardIdx].points;
+
+  if (_selectedCardIdx === cardIdx) {
+    _selectedCardIdx = null;
+  } else if (_selectedCardIdx !== null && _selectedCardIdx > cardIdx) {
+    _selectedCardIdx--;  // hand shifted down; track new index of selected card
+  }
   _shiftSourceIdx = null;
-  setState(next);
-  renderGame(next);
-  if (next.phase === 'end') _triggerEndGame(next);
+
+  _animating = true;
+  (cardEl ? animateScore(cardEl, pts) : Promise.resolve()).then(() => {
+    _animating = false;
+    setState(next);
+    renderGame(next);
+    if (next.phase === 'end') _triggerEndGame(next);
+  });
 }
 
 // After any turn-ending action (skip / end turn)
@@ -293,9 +314,10 @@ function _afterAction(state) {
   clearHistory();
   if (state.mode === 'multi') {
     const nextPlayer = state.players[state.currentPlayerIndex];
-    showPassOverlay(nextPlayer.name, () => renderGame(state));
+    showPassOverlay(nextPlayer.name, () => { renderGame(state); animateHandDraw(); });
   } else {
     renderGame(state);
+    animateHandDraw();
   }
 }
 
@@ -304,6 +326,7 @@ function _triggerEndGame(state) {
     const results = getResults(state);
     renderResults(results);
     showScreen('results');
+    animateResults();
   } catch(e) {
     console.error('[_triggerEndGame]', e);
   }
@@ -311,7 +334,7 @@ function _triggerEndGame(state) {
 
 // ── Tile interaction ───────────────────────────────────────────────────────
 function _handleTileClick(tileEl) {
-  if (_selectedCardIdx === null) return;
+  if (_animating || _selectedCardIdx === null) return;
 
   const tileIdx = parseInt(tileEl.dataset.tileIdx, 10);
   const s = getState();
@@ -327,35 +350,47 @@ function _handleTileClick(tileEl) {
     // Tapped same tile again → FLIP
     pushHistory();
     const next = doFlip(s, _selectedCardIdx, tileIdx);
-    if (next) {
-      _clearInteraction();
+    if (!next) { popHistory(); return; }
+
+    _animating = true;
+    _clearInteraction();
+    animateFlip(tileEl, s.board[tileIdx], next.board[tileIdx]).then(() => {
+      _animating = false;
       setState(next);
       renderGame(next);
       if (next.phase === 'end') _triggerEndGame(next);
-    } else {
-      popHistory();
-    }
+    });
     return;
   }
 
   // Tapped a different tile → attempt SHIFT
   pushHistory();
-  const next = doShift(s, _selectedCardIdx, _shiftSourceIdx, tileIdx);
-  if (next) {
-    _clearInteraction();
-    setState(next);
-    renderGame(next);
-    if (next.phase === 'end') _triggerEndGame(next);
-  } else {
+  const srcIdx = _shiftSourceIdx;
+  const next = doShift(s, _selectedCardIdx, srcIdx, tileIdx);
+  if (!next) {
     // Not adjacent: re-prime the newly tapped tile
     popHistory();
     _shiftSourceIdx = tileIdx;
     _refreshTiles();
+    return;
   }
+
+  const boardEl  = _el((s.mode === 'solo' ? 'solo-' : '') + 'board');
+  const srcEl    = boardEl.querySelector(`[data-tile-idx="${srcIdx}"]`);
+
+  _animating = true;
+  _clearInteraction();
+  animateShift(srcEl, tileEl).then(() => {
+    _animating = false;
+    setState(next);
+    renderGame(next);
+    if (next.phase === 'end') _triggerEndGame(next);
+  });
 }
 
 // ── Hand interaction ───────────────────────────────────────────────────────
 function _handleHandClick(e) {
+  if (_animating) return;
   const scoreBtn = e.target.closest('[data-score-idx]');
   if (scoreBtn) {
     _onScore(parseInt(scoreBtn.dataset.scoreIdx, 10));

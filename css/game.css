@@ -77,7 +77,6 @@
 }
 .tile:hover { transform: scale(1.05); box-shadow: 0 0 16px rgba(255,255,255,0.15); }
 .tile.tile-interactive { cursor: crosshair; }
-.tile.tile-pending { box-shadow: 0 0 0 3px var(--gold), 0 3px 10px rgba(0,0,0,0.45); transform: scale(1.05); }
 .tile-A { background-image: url('../images/a.png'); }
 .tile-B { background-image: url('../images/b.png'); }
 .tile-C { background-image: url('../images/c.png'); }
@@ -217,6 +216,79 @@
 .turn-guide .info-link { color: var(--teal); text-decoration: underline; font-size: 11px; cursor: pointer; }
 
 /* ===================================================
+   ANIMATIONS
+   =================================================== */
+
+/* Pending tile pulse — only box-shadow animates; transform stays static */
+.tile.tile-pending {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px var(--gold), 0 3px 10px rgba(0,0,0,0.45);
+  animation: pendingPulse 1.4s ease-in-out infinite;
+}
+@keyframes pendingPulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--gold), 0 3px 10px rgba(0,0,0,0.45); }
+  50%       { box-shadow: 0 0 0 5px var(--gold-light), 0 0 24px rgba(226,192,110,0.45); }
+}
+
+/* Scorable card shimmer — plays once each time the element is created */
+.pcard.scorable {
+  animation: scorableShimmer 0.55s ease-out both;
+}
+@keyframes scorableShimmer {
+  0%   { box-shadow: 0 0 0 rgba(79,191,178,0); border-color: var(--border); }
+  45%  { box-shadow: 0 0 26px rgba(79,191,178,0.65); border-color: var(--teal); }
+  100% { box-shadow: 0 0 14px var(--teal-glow); border-color: var(--teal); }
+}
+
+/* Score +N pop */
+.score-pop {
+  position: fixed;
+  transform: translate(-50%, -50%);
+  font-size: 24px; font-weight: 800;
+  color: var(--gold);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+}
+.score-pop-go {
+  animation: scorePop 0.5s ease-out forwards;
+}
+@keyframes scorePop {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  60%  { opacity: 1; transform: translate(-50%, -130%) scale(1.15); }
+  100% { opacity: 0; transform: translate(-50%, -180%) scale(0.9); }
+}
+
+/* Card draw — stagger slide-up on new hand */
+.card-draw-in {
+  animation: cardDrawIn 0.3s ease-out both;
+}
+@keyframes cardDrawIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Strike pip flash */
+.strike-pip.strike-flash {
+  animation: strikeFlash 0.55s ease-out both;
+}
+@keyframes strikeFlash {
+  0%   { background: var(--red); box-shadow: none; }
+  35%  { background: #ff6060; box-shadow: 0 0 14px rgba(255,80,80,0.85); transform: scale(1.35); }
+  100% { background: var(--red); box-shadow: none; transform: scale(1); }
+}
+
+/* Results reveal */
+.result-reveal {
+  animation: resultReveal 0.38s ease-out both;
+}
+@keyframes resultReveal {
+  from { opacity: 0; transform: translateY(18px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* ===================================================
    PASS-AND-PLAY OVERLAY
    =================================================== */
 #pass-overlay {
@@ -224,7 +296,10 @@
   background: rgba(6,32,51,0.96);
   display: flex; align-items: center; justify-content: center;
   backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
 }
+#pass-overlay.pass-overlay-in { opacity: 1; }
 .pass-overlay-inner { text-align: center; }
 .pass-overlay-label { font-size: 12px; text-transform: uppercase; letter-spacing: 4px; color: var(--muted); margin-bottom: 8px; }
 .pass-overlay-name  { font-size: clamp(32px,7vw,64px); font-weight: 800; color: var(--gold-light); letter-spacing: 2px; margin-bottom: 36px; text-shadow: 0 0 40px rgba(226,192,110,0.4); }

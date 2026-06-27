@@ -21,6 +21,7 @@
   <div class="splash-sub">A Pattern Matching Strategy Game</div>
   <button class="splash-play" onclick="showScreen('settings')">PLAY</button>
   <div class="splash-version">v 0.1.0</div>
+  <button class="splash-clear-link" onclick="clearLocalData()">Clear saved data</button>
 </div>
 
 
@@ -61,26 +62,26 @@
         <div class="player-inputs">
           <div class="player-row" id="prow1">
             <div class="player-num-badge">1</div>
-            <input class="player-name-input" type="text" value="Alex" placeholder="Player 1">
+            <input class="player-name-input" type="text" value="Player 1" placeholder="Player 1" oninput="saveSettings()">
           </div>
           <div class="player-row" id="prow2">
             <div class="player-num-badge">2</div>
-            <input class="player-name-input" type="text" value="Jordan" placeholder="Player 2">
+            <input class="player-name-input" type="text" value="Player 2" placeholder="Player 2" oninput="saveSettings()">
             <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
           </div>
           <div class="player-row" id="prow3" style="display:none">
             <div class="player-num-badge">3</div>
-            <input class="player-name-input" type="text" value="Player 3" placeholder="Player 3">
+            <input class="player-name-input" type="text" value="Player 3" placeholder="Player 3" oninput="saveSettings()">
             <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
           </div>
           <div class="player-row" id="prow4" style="display:none">
             <div class="player-num-badge">4</div>
-            <input class="player-name-input" type="text" value="Player 4" placeholder="Player 4">
+            <input class="player-name-input" type="text" value="Player 4" placeholder="Player 4" oninput="saveSettings()">
             <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
           </div>
           <div class="player-row" id="prow5" style="display:none">
             <div class="player-num-badge">5</div>
-            <input class="player-name-input" type="text" value="Player 5" placeholder="Player 5">
+            <input class="player-name-input" type="text" value="Player 5" placeholder="Player 5" oninput="saveSettings()">
             <button class="type-toggle" onclick="togglePlayerType(this)">👤 Human</button>
           </div>
         </div>
