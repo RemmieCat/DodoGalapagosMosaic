@@ -1,9 +1,10 @@
 'use strict';
 
 // ── UI state ───────────────────────────────────────────────────────────────
-let _selectedCardIdx = null;   // hand index of selected card, or null
-let _shiftSourceIdx  = null;   // tile index of primed tile, or null
-let _animating       = false;  // blocks input during animations
+let _selectedCardIdx  = null;   // hand index of selected card, or null
+let _shiftSourceIdx   = null;   // tile index of primed tile, or null
+let _animating        = false;  // blocks input during animations
+let _uiAbortCtrl      = null;   // AbortController for current game's listeners
 
 // ── Utilities ──────────────────────────────────────────────────────────────
 function _el(id)  { return document.getElementById(id); }
@@ -18,32 +19,37 @@ function initUI(mode) {
   _selectedCardIdx = null;
   _shiftSourceIdx  = null;
 
+  // Cancel all listeners from any previous game before rebinding
+  if (_uiAbortCtrl) _uiAbortCtrl.abort();
+  _uiAbortCtrl = new AbortController();
+  const sig = { signal: _uiAbortCtrl.signal };
+
   const p = mode === 'solo' ? 'solo-' : '';
 
   // Action buttons
-  _el(p + 'btn-skip').addEventListener('click', _onSkip);
-  _el(p + 'btn-undo').addEventListener('click', _onUndo);
-  _el(p + 'btn-end').addEventListener('click',  _onEndTurn);
+  _el(p + 'btn-skip').addEventListener('click', _onSkip,    sig);
+  _el(p + 'btn-undo').addEventListener('click', _onUndo,    sig);
+  _el(p + 'btn-end').addEventListener('click',  _onEndTurn, sig);
 
   // Board (event delegation — bound once, survives re-renders)
   const boardEl = _el(p + 'board');
   boardEl.addEventListener('click', e => {
     const tile = e.target.closest('[data-tile-idx]');
     if (tile) _handleTileClick(tile);
-  });
+  }, sig);
 
   // Hands (event delegation)
   [p + 'hand', p + 'hand-mobile'].forEach(id => {
     const el = _el(id);
-    if (el) el.addEventListener('click', _handleHandClick);
+    if (el) el.addEventListener('click', _handleHandClick, sig);
   });
 
   // Scores modal close (multiplayer only)
   if (mode === 'multi') {
     const closeBtn = document.querySelector('.scores-modal-close');
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal, sig);
     const modal = _el('scores-modal');
-    if (modal) modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    if (modal) modal.addEventListener('click', e => { if (e.target === modal) closeModal(); }, sig);
   }
 }
 
@@ -53,6 +59,7 @@ function renderGame(state) {
   _renderHand(state);
   _renderTopbar(state);
   _renderActionButtons(state);
+  _renderTileGuide(state);
   if (state.mode === 'multi') _renderScoresModal(state);
 }
 
@@ -61,8 +68,44 @@ function _renderBoard(state) {
   const boardEl = _el((state.mode === 'solo' ? 'solo-' : '') + 'board');
   boardEl.innerHTML = state.board.map((side, i) => {
     const pending = i === _shiftSourceIdx ? ' tile-pending' : '';
-    return `<div class="tile tile-${side}${pending}" data-tile-idx="${i}"></div>`;
+    const img     = state.tileImages ? state.tileImages[side] : null;
+    const bgStyle = img ? ` style="background-image:url('images/${img}')"` : '';
+    return `<div class="tile tile-${side}${pending}" data-tile-idx="${i}"${bgStyle}></div>`;
   }).join('');
+}
+
+// ── Tile guide image sync ──────────────────────────────────────────────────
+// Updates ALL tile guide swatches (game panes + settings page) to reflect a
+// given tileImages map. Called from renderGame and also from app.js directly
+// when images are chosen before game start.
+function syncTileGuideImages(tileImages) {
+  if (!tileImages) return;
+  const pairs = [['A','B'],['C','D'],['E','F'],['G','H']];
+
+  // Small swatches in both in-game guide panes
+  ['gtile', 'stile'].forEach(id => {
+    const pane = _el(id);
+    if (!pane) return;
+    const swatches = pane.querySelectorAll('.swatch-sm');
+    pairs.forEach(([a, b], i) => {
+      if (swatches[i * 2])     swatches[i * 2].style.backgroundImage     = `url('images/${tileImages[a]}')`;
+      if (swatches[i * 2 + 1]) swatches[i * 2 + 1].style.backgroundImage = `url('images/${tileImages[b]}')`;
+    });
+  });
+
+  // Large swatches in the settings tile guide tab
+  const settingsPane = _el('stab-tiles');
+  if (settingsPane) {
+    const swatches = settingsPane.querySelectorAll('.swatch-lg');
+    pairs.forEach(([a, b], i) => {
+      if (swatches[i * 2])     swatches[i * 2].style.backgroundImage     = `url('images/${tileImages[a]}')`;
+      if (swatches[i * 2 + 1]) swatches[i * 2 + 1].style.backgroundImage = `url('images/${tileImages[b]}')`;
+    });
+  }
+}
+
+function _renderTileGuide(state) {
+  syncTileGuideImages(state.tileImages);
 }
 
 // ── Hand ───────────────────────────────────────────────────────────────────
@@ -101,7 +144,7 @@ function _cardHTML(card, idx, isScorableCard, isSelected) {
       <span class="pcard-pts">${card.points}</span>
       <button class="pcard-score-btn" data-score-idx="${idx}">SCORE</button>
     </div>
-    <div class="pgrid" style="grid-template-columns:repeat(${cols},20px)">${cells}</div>
+    <div class="pgrid" style="grid-template-columns:repeat(${cols},var(--pcell-sz,20px))">${cells}</div>
   </div>`;
 }
 
@@ -354,7 +397,8 @@ function _handleTileClick(tileEl) {
 
     _animating = true;
     _clearInteraction();
-    animateFlip(tileEl, s.board[tileIdx], next.board[tileIdx]).then(() => {
+    const toImg = s.tileImages ? s.tileImages[next.board[tileIdx]] : null;
+    animateFlip(tileEl, s.board[tileIdx], next.board[tileIdx], toImg).then(() => {
       _animating = false;
       setState(next);
       renderGame(next);

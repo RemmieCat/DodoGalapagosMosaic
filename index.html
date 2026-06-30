@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Galápagos Mosaic</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/game.css">
-<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/base.css?v=8">
+<link rel="stylesheet" href="css/game.css?v=8">
+<link rel="stylesheet" href="css/layout.css?v=8">
 </head>
 <body>
 
@@ -15,10 +15,14 @@
      SCREEN 1 — SPLASH
      ============================================================ -->
 <div id="splash" class="screen active">
-  <div class="splash-fauna">🦎 🐢 🦅 🐧 🦭</div>
-  <div class="splash-title">Galápagos<br>Mosaic</div>
-  <div class="splash-divider"></div>
-  <div class="splash-sub">A Pattern Matching Strategy Game</div>
+  <img class="splash-logo" src="images/logo.png" alt="Galápagos Mosaic">
+  <div class="splash-logo-sub">A Pattern Matching Strategy Game</div>
+  <div class="splash-text-group">
+    <div class="splash-fauna">🦎 🐢 🦅 🐧 🦭</div>
+    <div class="splash-title">Galápagos<br>Mosaic</div>
+    <div class="splash-divider"></div>
+    <div class="splash-sub">A Pattern Matching Strategy Game</div>
+  </div>
   <button class="splash-play" onclick="showScreen('settings')">PLAY</button>
   <div class="splash-version">v 0.1.0</div>
   <button class="splash-clear-link" onclick="clearLocalData()">Clear saved data</button>
@@ -32,6 +36,7 @@
 
   <!-- Sticky top (landscape only) — title + start button -->
   <div class="settings-ls-sticky">
+    <img class="settings-logo" src="images/logo.png" alt="Galápagos Mosaic">
     <span class="settings-ls-title">Game Setup</span>
     <div style="margin-left:auto">
       <button class="settings-start" onclick="startGame()">Start Game</button>
@@ -160,27 +165,27 @@
         <div class="s-label" style="margin-bottom:14px">Each tile is double-sided. Flipping reveals the other face.</div>
         <div class="tile-guide-grid">
           <div class="tile-pair-card">
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/a.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/a_tortoise.png')"></div></div>
             <div class="pair-arrow">⇄</div>
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/b.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/b_starfish.png')"></div></div>
             <div class="tile-count">×1</div>
           </div>
           <div class="tile-pair-card">
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/c.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/c_sallylightfoot_crab.png')"></div></div>
             <div class="pair-arrow">⇄</div>
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/d.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/d_sealion.png')"></div></div>
             <div class="tile-count">×2</div>
           </div>
           <div class="tile-pair-card">
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/e.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/e_magnificent_frigatebird.png')"></div></div>
             <div class="pair-arrow">⇄</div>
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/f.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/f_land_iguana.png')"></div></div>
             <div class="tile-count">×3</div>
           </div>
           <div class="tile-pair-card">
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/g.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/g_blue_footed_booby.png')"></div></div>
             <div class="pair-arrow">⇄</div>
-            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/h.png')"></div></div>
+            <div class="tile-icon"><div class="swatch-lg" style="background-image:url('images/h_sea_turtle.png')"></div></div>
             <div class="tile-count">×3</div>
           </div>
         </div>
@@ -273,10 +278,10 @@
 
         <div id="gtile" class="guide-pane active">
           <div class="tile-guide-mini">
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/a.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/b.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/c.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/d.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/e.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/f.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/g.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/h.png')"></div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/a_tortoise.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/b_starfish.png')"></div><span class="tpm-count">×1</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/c_sallylightfoot_crab.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/d_sealion.png')"></div><span class="tpm-count">×2</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/e_magnificent_frigatebird.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/f_land_iguana.png')"></div><span class="tpm-count">×3</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/g_blue_footed_booby.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/h_sea_turtle.png')"></div><span class="tpm-count">×3</span></div>
           </div>
         </div>
 
@@ -378,10 +383,10 @@
 
         <div id="stile" class="guide-pane active">
           <div class="tile-guide-mini">
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/a.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/b.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/c.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/d.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/e.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/f.png')"></div></div>
-            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/g.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/h.png')"></div></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/a_tortoise.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/b_starfish.png')"></div><span class="tpm-count">×1</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/c_sallylightfoot_crab.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/d_sealion.png')"></div><span class="tpm-count">×2</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/e_magnificent_frigatebird.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/f_land_iguana.png')"></div><span class="tpm-count">×3</span></div>
+            <div class="tpm"><div class="swatch-sm" style="background-image:url('images/g_blue_footed_booby.png')"></div><div class="tpm-arrow">⇄</div><div class="swatch-sm" style="background-image:url('images/h_sea_turtle.png')"></div><span class="tpm-count">×3</span></div>
           </div>
         </div>
 
@@ -425,12 +430,12 @@
 <!-- ============================================================
      SCRIPTS
      ============================================================ -->
-<script src="data/cards.js"></script>
-<script src="js/state.js"></script>
-<script src="js/gameLogic.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/animations.js"></script>
-<script src="js/app.js"></script>
+<script src="data/cards.js?v=8"></script>
+<script src="js/state.js?v=8"></script>
+<script src="js/gameLogic.js?v=8"></script>
+<script src="js/ui.js?v=8"></script>
+<script src="js/animations.js?v=8"></script>
+<script src="js/app.js?v=8"></script>
 
 </body>
 </html>

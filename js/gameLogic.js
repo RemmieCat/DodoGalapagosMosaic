@@ -110,6 +110,28 @@ function canEndTurn(state) {
   return p.hand.length === 0 && !canSkip(state);
 }
 
+// ── Tile image variants ────────────────────────────────────────────────────
+const TILE_IMAGE_OPTIONS = {
+  A: ['a_mockingbird.png',             'a_tortoise.png'],
+  B: ['b_starfish.png',                'b_uchin.png'],
+  C: ['c_lava_lizards.png',            'c_sallylightfoot_crab.png'],
+  D: ['d_nazca_booby.png',             'd_sealion.png'],
+  E: ['e_magnificent_frigatebird.png', 'e_vermilion_flycatcher.png'],
+  F: ['f_land_iguana.png',             'f_yellow_warbler.png'],
+  G: ['g_blue_footed_booby.png',       'g_marine_iguana.png'],
+  H: ['h_cactus_finch.png',            'h_sea_turtle.png'],
+};
+
+// Returns a random image selection; pass the result into initGame to guarantee
+// the settings tile guide and the game board use identical images.
+function pickTileImages() {
+  const result = {};
+  for (const [letter, opts] of Object.entries(TILE_IMAGE_OPTIONS)) {
+    result[letter] = opts[Math.floor(Math.random() * opts.length)];
+  }
+  return result;
+}
+
 // ── Game initialisation ────────────────────────────────────────────────────
 
 function initGame(settings) {
@@ -132,6 +154,14 @@ function initGame(settings) {
     skippedLastTurn: false,
   }));
 
+  const tileImages = settings.tileImages || (() => {
+    const r = {};
+    for (const [letter, opts] of Object.entries(TILE_IMAGE_OPTIONS)) {
+      r[letter] = opts[Math.floor(rng() * opts.length)];
+    }
+    return r;
+  })();
+
   let state = {
     mode:               settings.mode,
     board:              makeBoard(rng),
@@ -146,6 +176,7 @@ function initGame(settings) {
     endgameTurnsLeft:   0,
     strikes:            0,
     threshold,
+    tileImages,
   };
 
   // Deal MAX_HAND cards to each player
@@ -235,12 +266,6 @@ function doScore(state, cardIdx) {
     }
   }
 
-  // Check solo win (scoring all 16 cards)
-  let phase = state.phase;
-  if (state.mode === 'solo' && newScored.length >= state.threshold) {
-    phase = 'end';
-  }
-
   return {
     ...state,
     players,
@@ -248,7 +273,7 @@ function doScore(state, cardIdx) {
     scoredThisTurn:  true,
     endgameTriggered,
     endgameTurnsLeft,
-    phase,
+    phase:           state.phase,
   };
 }
 

@@ -3,7 +3,7 @@
 // ── Core action animations ─────────────────────────────────────────────────
 
 // Flip a board tile with a rotateY — swaps the tile image at the midpoint.
-function animateFlip(tileEl, fromSide, toSide) {
+function animateFlip(tileEl, fromSide, toSide, toImg) {
   return new Promise(resolve => {
     // Remove pending class so its CSS animation doesn't fight our inline transform
     tileEl.classList.remove('tile-pending', 'tile-interactive');
@@ -17,9 +17,10 @@ function animateFlip(tileEl, fromSide, toSide) {
     tileEl.style.transform  = 'perspective(400px) rotateY(90deg)';
 
     setTimeout(() => {
-      // Swap image and jump to -90° so phase 2 is a continuous reveal
+      // Swap class and inline background-image, then jump to -90° for continuous reveal
       tileEl.classList.remove('tile-' + fromSide);
       tileEl.classList.add('tile-'    + toSide);
+      if (toImg) tileEl.style.backgroundImage = `url('images/${toImg}')`;
       tileEl.style.transition = 'none';
       tileEl.style.transform  = 'perspective(400px) rotateY(-90deg)';
       void tileEl.offsetWidth;

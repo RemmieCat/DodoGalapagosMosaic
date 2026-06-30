@@ -3,6 +3,16 @@
    =================================================== */
 
 /* --------------------------------------------------
+   SPLASH — LOGO (tablet and larger)
+   Show logo image, hide emoji/text group.
+   -------------------------------------------------- */
+@media (min-width: 600px) {
+  .splash-logo       { display: block; margin-bottom: 16px; max-width: min(720px, 88vw); }
+  .splash-logo-sub   { display: block; }
+  .splash-text-group { display: none; }
+}
+
+/* --------------------------------------------------
    SETTINGS — LANDSCAPE (any width)
    Sticky top: title + start button
    Body: inputs left (scroll) | tabs right (scroll)
@@ -41,6 +51,121 @@
   .settings-right { overflow: visible; }
   .tab-pane { overflow: visible; min-height: 200px; }
   .tile-guide-grid { grid-template-columns: 1fr; }
+}
+
+/* --------------------------------------------------
+   LARGE SCREENS — LAPTOP (≥ 1024 px landscape)
+   Bigger board, larger type, roomier cards/swatches.
+   -------------------------------------------------- */
+@media (orientation: landscape) and (min-width: 900px) {
+  .settings-logo     { display: block; }
+  .settings-ls-title { display: none; }
+}
+
+@media (orientation: landscape) and (min-width: 1024px) {
+  :root { --pcell-sz: 25px; }
+
+  /* More room for the board */
+  .game-main { flex: 5; }
+  .game-side  { flex: 2; }
+
+  .board-grid {
+    max-height: min(100%, 560px);
+    max-width:  min(560px, 100%);
+  }
+
+  /* Topbar type */
+  .cp-label       { font-size: 12px; }
+  .cp-name        { font-size: 28px; }
+  .pb-name        { font-size: 12px; max-width: 86px; }
+  .pb-progress    { font-size: 22px; }
+  .pb-pts         { font-size: 12px; }
+  .player-block   { padding: 8px 13px; min-width: 86px; }
+  .strikes-label  { font-size: 12px; }
+
+  /* Action buttons */
+  .act-btn        { padding: 11px 18px; font-size: 14px; }
+
+  /* Pattern cards */
+  .pcard          { padding: 10px; }
+  .pcard-pts      { font-size: 20px; }
+  .pgrid          { gap: 4px; }
+  .hand           { gap: 10px; }
+
+  /* In-game tile guide swatches */
+  .swatch-sm      { width: 78px; height: 78px; }
+  .tpm            { gap: 9px; padding: 7px 10px; }
+
+  /* Guide panel */
+  .hand-label     { font-size: 13px; }
+  .guide-tab-btn  { font-size: 14px; padding: 10px 6px; }
+  .turn-guide     { font-size: 14px; }
+
+  /* Settings panel — left column */
+  .settings-left        { width: 380px; }
+  .settings-ls-title    { font-size: 18px; }
+  .s-label              { font-size: 12px; }
+  .count-btn            { font-size: 19px; }
+  .player-name-input    { font-size: 15px; }
+  .threshold-mode-btn   { font-size: 13px; }
+  .threshold-value-label { font-size: 15px; }
+
+  /* Settings panel — right column (rules + tile guide) */
+  .tab-btn              { font-size: 15px; padding: 14px 24px; }
+  .rules-body           { font-size: 16px; }
+  .rules-body h4        { font-size: 13px; }
+  .swatch-lg            { width: 140px; height: 140px; }
+  .tile-count           { font-size: 22px; font-weight: 700; color: var(--text); margin-left: 8px; }
+  .pair-arrow           { font-size: 22px; }
+  .tile-pair-card       { padding: 18px 20px; gap: 14px; }
+  .tile-guide-grid      { gap: 18px; }
+}
+
+/* --------------------------------------------------
+   LARGE SCREENS — DESKTOP (≥ 1400 px landscape)
+   -------------------------------------------------- */
+@media (orientation: landscape) and (min-width: 1400px) {
+  :root { --pcell-sz: 29px; }
+
+  .game-main { flex: 3; }
+  .game-side  { flex: 1; }
+
+  .board-grid {
+    max-height: min(100%, 660px);
+    max-width:  min(660px, 100%);
+  }
+
+  .cp-label       { font-size: 13px; }
+  .cp-name        { font-size: 32px; }
+  .pb-progress    { font-size: 25px; }
+  .pb-pts         { font-size: 13px; }
+  .pb-name        { font-size: 13px; max-width: 96px; }
+  .player-block   { padding: 9px 15px; min-width: 96px; }
+  .strikes-label  { font-size: 13px; }
+
+  .act-btn        { padding: 12px 22px; font-size: 15px; }
+
+  .pcard-pts      { font-size: 23px; }
+  .pgrid          { gap: 5px; }
+  .hand           { gap: 12px; }
+
+  .swatch-sm      { width: 92px; height: 92px; }
+
+  .hand-label     { font-size: 14px; }
+  .guide-tab-btn  { font-size: 15px; padding: 11px 6px; }
+  .turn-guide     { font-size: 15px; }
+
+  .settings-left        { width: 460px; }
+  .settings-ls-title    { font-size: 20px; }
+  .s-label              { font-size: 13px; }
+  .count-btn            { font-size: 21px; }
+  .tab-btn              { font-size: 16px; padding: 15px 28px; }
+  .rules-body           { font-size: 17px; }
+  .swatch-lg            { width: 160px; height: 160px; }
+  .tile-count           { font-size: 26px; }
+  .pair-arrow           { font-size: 26px; }
+  .tile-pair-card       { padding: 22px 24px; gap: 16px; }
+  .tile-guide-grid      { gap: 22px; }
 }
 
 /* --------------------------------------------------

@@ -1,9 +1,15 @@
 'use strict';
 
+const VERSION = '0.1.0';
+
 /* ─────────────────────────────────────────────
    SCREEN ROUTING
    ───────────────────────────────────────────── */
 const SCREENS = ['splash', 'settings', 'game', 'game-solo', 'results'];
+
+// Images chosen for the next game — set when settings is shown so the tile
+// guide and the actual board always use identical images.
+let _nextTileImages = null;
 
 /* ─────────────────────────────────────────────
    GAME START
@@ -25,7 +31,10 @@ function startGame() {
 
   const mode = playerCount === 1 ? 'solo' : 'multi';
   const customThreshold = _getThresholdSetting(playerCount);
-  const state = initGame({ mode, players, threshold: customThreshold });
+  // Use the images already shown in the settings tile guide so they match.
+  const tileImages = _nextTileImages || pickTileImages();
+  _nextTileImages = null; // cleared — next settings visit picks fresh images
+  const state = initGame({ mode, players, threshold: customThreshold, tileImages });
 
   setState(state);
   clearHistory();
@@ -43,6 +52,11 @@ function showScreen(id) {
   const target = document.getElementById(id);
   if (target) target.classList.add('active');
   initMobileTabs();
+  // Refresh the tile guide preview images whenever settings is shown
+  if (id === 'settings') {
+    _nextTileImages = pickTileImages();
+    syncTileGuideImages(_nextTileImages);
+  }
 }
 
 /* ─────────────────────────────────────────────
@@ -189,6 +203,8 @@ function closeModal() { document.getElementById('scores-modal').classList.remove
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('scores-modal');
   if (modal) modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  const verEl = document.querySelector('.splash-version');
+  if (verEl) verEl.textContent = `v ${VERSION}`;
   loadSettings();
 });
 
