@@ -484,8 +484,15 @@ function buildSoloDeck(fullDeck) {
   for (const card of fullDeck) buckets[card.points].push(card);
   const targets = { 1: 8, 2: 4, 3: 3, 5: 1 };
   const deck = [];
-  for (const [pts, n] of Object.entries(targets))
-    deck.push(...buckets[pts].slice(0, n));
+  for (const [pts, n] of Object.entries(targets)) {
+    // Shuffle the bucket so each game draws a different subset
+    const b = [...buckets[pts]];
+    for (let i = b.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [b[i], b[j]] = [b[j], b[i]];
+    }
+    deck.push(...b.slice(0, n));
+  }
   return deck;
 }
 

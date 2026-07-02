@@ -184,12 +184,16 @@ function _renderStrikes(n) {
   // Desktop topbar pips
   for (let i = 1; i <= 4; i++) {
     const pip = _el(`spip${i}`);
-    if (pip) pip.classList.toggle('on', i <= n);
+    if (pip) {
+      pip.classList.remove('strike-flash');
+      pip.classList.toggle('on', i <= n);
+    }
   }
   // Mobile info bar pips
   const mibStrikes = _el('solo-mib-strikes');
   if (mibStrikes) {
     mibStrikes.querySelectorAll('.strike-pip').forEach((pip, i) => {
+      pip.classList.remove('strike-flash');
       pip.classList.toggle('on', i < n);
     });
   }
@@ -224,22 +228,55 @@ function _renderActionButtons(state) {
 
 // ── Results screen ─────────────────────────────────────────────────────────
 function renderResults(results) {
+  // Fun fact (shown for all modes)
+  if (typeof pickFunFact === 'function' && FUN_FACTS.length > 0) {
+    const fact = pickFunFact();
+    _el('funfact-tile').style.backgroundImage = `url('images/${fact.image}')`;
+    _el('funfact-title').textContent = fact.title;
+    _el('funfact-list').innerHTML = fact.facts.map(f => `<li>${_esc(f)}</li>`).join('');
+    _el('results-funfact').style.display = '';
+  }
+
   if (results.mode === 'solo') {
-    _el('results-trophy').textContent      = results.won ? '🏆' : '💀';
-    _el('results-crown-label').textContent = results.won ? 'Winner' : 'Eliminated';
-    _el('results-winner-name').textContent = results.player.name;
-    _el('results-winner-sub').textContent  = results.won
-      ? `${results.player.score} pts · ${results.player.scored.length} cards scored`
-      : `${results.strikes} strikes · game over`;
+    // Record this game and render stats chart
+    const playerName = results.player.name;
+    recordSoloGame(playerName, results.player.scored.length);
+    _renderSoloStats(playerName);
+    _el('solo-stats').style.display = '';
+
+    // Hide multiplayer winner block, show rank block
+    _el('results-winner-block').style.display = 'none';
+    _el('results-rank-block').style.display   = '';
+
+    const cardCount = results.player.scored.length;
+    const rank = (typeof getSoloRank === 'function' && SOLO_RANKS.length > 0)
+      ? getSoloRank(cardCount)
+      : null;
+
+    if (rank) {
+      _el('results-rank-title').textContent = rank.title;
+      _el('results-rank-quip').textContent  = rank.quips[Math.floor(Math.random() * rank.quips.length)];
+    } else {
+      _el('results-rank-title').textContent = results.won ? 'Winner!' : 'Game Over';
+      _el('results-rank-quip').textContent  = results.won
+        ? `${results.player.score} pts · ${cardCount} cards scored`
+        : `${results.strikes} strikes`;
+    }
+
     _el('results-bonus').style.display = 'none';
     _el('results-tbody').innerHTML = `
       <tr${results.won ? ' class="row-winner"' : ''}>
         <td><span class="rank-badge${results.won ? ' r1' : ''}">${results.won ? 1 : '–'}</span></td>
         <td>${_esc(results.player.name)}</td>
         <td>${results.player.score} pts</td>
-        <td>${results.player.scored.length}</td>
+        <td>${cardCount}</td>
       </tr>`;
   } else {
+    // Show multiplayer winner block, hide rank block and stats
+    _el('results-winner-block').style.display = '';
+    _el('results-rank-block').style.display   = 'none';
+    _el('solo-stats').style.display           = 'none';
+
     const winner = results.players[0];
     _el('results-trophy').textContent      = '🏆';
     _el('results-crown-label').textContent = 'Winner';
@@ -264,6 +301,50 @@ function renderResults(results) {
         <td>${p.scored.length}</td>
       </tr>`).join('');
   }
+}
+
+// ── Solo stats chart ───────────────────────────────────────────────────────
+function _renderSoloStats(name) {
+  const raw   = getSoloStats(name);               // length-17 array, index = cards scored
+  const total = raw.reduce((s, n) => s + n, 0);
+
+  // Buckets: "<10" aggregates 0–9; then individual counts 10–16
+  const buckets = [
+    { label: '<10', count: raw.slice(0, 10).reduce((s, n) => s + n, 0) },
+    { label: '10',  count: raw[10] || 0 },
+    { label: '11',  count: raw[11] || 0 },
+    { label: '12',  count: raw[12] || 0 },
+    { label: '13',  count: raw[13] || 0 },
+    { label: '14',  count: raw[14] || 0 },
+    { label: '15',  count: raw[15] || 0 },
+    { label: '16',  count: raw[16] || 0 },
+  ];
+
+  const maxCount = Math.max(...buckets.map(b => b.count), 1);
+
+  const bars = buckets.map(b => {
+    const pct    = Math.round((b.count / maxCount) * 100);
+    const isZero = b.count === 0;
+    return `<div class="ssbar-col">
+      <span class="ssbar-count">${b.count > 0 ? b.count : ''}</span>
+      <div class="ssbar-fill${isZero ? ' ssbar-zero' : ''}" style="height:${Math.max(pct, 4)}%"></div>
+      <span class="ssbar-label">${b.label}</span>
+    </div>`;
+  }).join('');
+
+  const gameWord = total === 1 ? 'game' : 'games';
+  _el('solo-stats').innerHTML = `
+    <div class="solo-stats-header">
+      <span class="solo-stats-title">${_esc(name)}'s History</span>
+      <button class="solo-stats-reset" onclick="_resetStatsAndRefresh(${JSON.stringify(name)})">Reset stats</button>
+    </div>
+    <div class="solo-stats-chart">${bars}</div>
+    <div class="solo-stats-total">${total} ${gameWord} played</div>`;
+}
+
+function _resetStatsAndRefresh(name) {
+  resetSoloStats(name);
+  _renderSoloStats(name);
 }
 
 // ── Pass-and-play overlay ──────────────────────────────────────────────────

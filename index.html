@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Galápagos Mosaic</title>
-<link rel="stylesheet" href="css/base.css?v=8">
-<link rel="stylesheet" href="css/game.css?v=8">
-<link rel="stylesheet" href="css/layout.css?v=8">
+<link rel="stylesheet" href="css/base.css?v=11">
+<link rel="stylesheet" href="css/game.css?v=11">
+<link rel="stylesheet" href="css/layout.css?v=11">
 </head>
 <body>
 
@@ -408,34 +408,67 @@
      SCREEN 4 — RESULTS
      ============================================================ -->
 <div id="results" class="screen">
-  <div class="results-winner-block">
-    <div class="results-trophy" id="results-trophy">🏆</div>
-    <div class="results-crown-label" id="results-crown-label">Winner</div>
-    <div class="results-winner-name" id="results-winner-name">—</div>
-    <div class="results-winner-sub" id="results-winner-sub">—</div>
+
+  <!-- Left column (landscape): fun fact -->
+  <div class="results-funfact" id="results-funfact" style="display:none">
+    <div class="funfact-inner">
+      <div class="funfact-tile" id="funfact-tile"></div>
+      <div class="funfact-body">
+        <div class="funfact-did-you-know">Did you know?</div>
+        <div class="funfact-title" id="funfact-title"></div>
+        <ul class="funfact-list" id="funfact-list"></ul>
+      </div>
+    </div>
   </div>
-  <div class="results-bonus" id="results-bonus" style="display:none"></div>
-  <div class="results-card">
-    <table class="results-table">
-      <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Cards</th></tr></thead>
-      <tbody id="results-tbody">
-        <!-- Populated dynamically -->
-      </tbody>
-    </table>
+
+  <!-- Right column (landscape): winner/rank + table + play again -->
+  <div class="results-main">
+
+    <!-- Multiplayer winner block -->
+    <div class="results-winner-block" id="results-winner-block">
+      <div class="results-trophy" id="results-trophy">🏆</div>
+      <div class="results-crown-label" id="results-crown-label">Winner</div>
+      <div class="results-winner-name" id="results-winner-name">—</div>
+      <div class="results-winner-sub" id="results-winner-sub">—</div>
+    </div>
+
+    <!-- Solo rank block (replaces winner block for solo games) -->
+    <div class="results-rank-block" id="results-rank-block" style="display:none">
+      <div class="results-rank-title" id="results-rank-title"></div>
+      <div class="results-rank-quip" id="results-rank-quip"></div>
+    </div>
+
+    <div class="results-bonus" id="results-bonus" style="display:none"></div>
+
+    <div class="results-card">
+      <table class="results-table">
+        <thead><tr><th>Rank</th><th>Player</th><th>Points</th><th>Cards</th></tr></thead>
+        <tbody id="results-tbody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Solo stats chart (hidden for multi) -->
+    <div class="solo-stats" id="solo-stats" style="display:none"></div>
+
+    <button class="play-again-btn" onclick="showScreen('settings')">Play Again</button>
+
   </div>
-  <button class="play-again-btn" onclick="showScreen('settings')">Play Again</button>
 </div>
 
 
 <!-- ============================================================
      SCRIPTS
      ============================================================ -->
-<script src="data/cards.js?v=8"></script>
-<script src="js/state.js?v=8"></script>
-<script src="js/gameLogic.js?v=8"></script>
-<script src="js/ui.js?v=8"></script>
-<script src="js/animations.js?v=8"></script>
-<script src="js/app.js?v=8"></script>
+<script src="data/cards.js?v=11"></script>
+<script src="data/funfacts.js?v=11"></script>
+<script src="js/state.js?v=11"></script>
+<script src="js/gameLogic.js?v=11"></script>
+<script src="js/stats.js?v=11"></script>
+<script src="js/ui.js?v=11"></script>
+<script src="js/animations.js?v=11"></script>
+<script src="js/app.js?v=11"></script>
 
 </body>
 </html>

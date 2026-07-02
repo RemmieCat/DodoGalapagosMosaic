@@ -255,24 +255,129 @@ button { font-family: inherit; cursor: pointer; }
 /* ===================================================
    SCREEN 4 — RESULTS
    =================================================== */
+/* ── Solo stats chart ── */
+.solo-stats { width: 100%; margin-bottom: 24px; }
+.solo-stats-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+.solo-stats-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+.solo-stats-total { font-size: 12px; color: var(--muted); margin-top: 8px; text-align: center; }
+.solo-stats-reset { background: none; border: none; color: var(--muted); font-size: 11px; text-decoration: underline; cursor: pointer; padding: 0; }
+.solo-stats-reset:hover { color: var(--teal); }
+.solo-stats-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+.ssbar-col { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; gap: 4px; }
+.ssbar-fill { width: 100%; background: var(--teal); border-radius: 3px 3px 0 0; min-height: 0; transition: height 0.3s ease; }
+.ssbar-fill.ssbar-zero { background: var(--border); min-height: 3px; }
+.ssbar-count { font-size: 10px; color: var(--muted); line-height: 1; min-height: 12px; }
+.ssbar-label { font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+/* ── Results — portrait / default ── */
 #results {
   background: radial-gradient(ellipse at 50% 35%, #0a2840 0%, #062033 65%);
-  align-items: center; padding: 32px 20px 40px;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 40px;
+  overflow-y: auto;
 }
-.results-winner-block { text-align: center; margin-bottom: 30px; }
-.results-trophy { font-size: 60px; line-height: 1; margin-bottom: 6px; }
-.results-crown-label { font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: var(--muted); }
-.results-winner-name { font-size: clamp(30px,6vw,56px); font-weight: 800; color: var(--gold-light); text-shadow: 0 0 40px rgba(226,192,110,0.5); letter-spacing: 2px; }
-.results-winner-sub { font-size: 16px; color: var(--teal); margin-top: 4px; }
-.results-bonus { font-size: 12px; color: var(--muted); margin-bottom: 24px; font-style: italic; }
-.results-card { width: 100%; max-width: 500px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
+.results-main {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; max-width: 520px;
+}
+
+.results-winner-block { text-align: center; margin-bottom: 24px; }
+.results-trophy       { font-size: 60px; line-height: 1; margin-bottom: 6px; }
+.results-crown-label  { font-size: 11px; text-transform: uppercase; letter-spacing: 4px; color: var(--muted); }
+.results-winner-name  { font-size: clamp(30px,6vw,52px); font-weight: 800; color: var(--gold-light); text-shadow: 0 0 40px rgba(226,192,110,0.5); letter-spacing: 2px; }
+.results-winner-sub   { font-size: 16px; color: var(--teal); margin-top: 4px; }
+
+.results-bonus { font-size: 13px; color: var(--muted); margin-bottom: 20px; font-style: italic; text-align: center; }
+
+.results-card { width: 100%; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 28px; }
 .results-table { width: 100%; border-collapse: collapse; }
-.results-table th { padding: 11px 16px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.18); }
-.results-table td { padding: 13px 16px; border-bottom: 1px solid rgba(226,192,110,0.06); font-size: 15px; }
+.results-table th { padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.18); }
+.results-table td { padding: 14px 16px; border-bottom: 1px solid rgba(226,192,110,0.06); font-size: 17px; }
 .results-table tr:last-child td { border-bottom: none; }
 .results-table .row-winner td { color: var(--gold); }
-.rank-badge { display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; font-weight: 800; background: var(--bg-tile); color: var(--muted); }
+.rank-badge { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px; font-weight: 800; background: var(--bg-tile); color: var(--muted); }
 .rank-badge.r1 { background: var(--gold); color: #062033; }
 .rank-badge.r2 { background: #888; color: #062033; }
 .play-again-btn { background: linear-gradient(135deg,#c9ad5a,#E2C06E); color: #062033; border: none; padding: 15px 52px; font-size: 15px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; border-radius: 8px; box-shadow: 0 0 28px rgba(226,192,110,0.28); transition: transform 0.15s,box-shadow 0.15s; }
 .play-again-btn:hover { transform: translateY(-2px); box-shadow: 0 0 44px rgba(226,192,110,0.48); }
+
+/* Solo rank block */
+.results-rank-block { text-align: center; margin-bottom: 24px; padding: 0 12px; }
+.results-rank-title  { font-size: clamp(26px,5vw,46px); font-weight: 800; color: var(--gold-light); text-shadow: 0 0 40px rgba(226,192,110,0.5); letter-spacing: 2px; margin-bottom: 10px; }
+.results-rank-quip   { font-size: 16px; color: var(--teal); font-style: italic; max-width: 420px; margin: 0 auto; line-height: 1.5; }
+
+/* Fun fact — portrait: stacked card above score table */
+.results-funfact { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 520px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 24px; }
+.funfact-tile { width: 140px; height: 140px; flex-shrink: 0; border-radius: 10px; background-size: cover; background-position: center; border: 2px solid var(--border); }
+.funfact-body { flex: 1; min-width: 0; width: 100%; }
+.funfact-did-you-know { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: var(--teal); margin-bottom: 4px; }
+.funfact-title { font-size: 19px; font-weight: 800; color: var(--gold-light); margin-bottom: 10px; }
+.funfact-list { margin: 0; padding-left: 18px; color: var(--text); font-size: 14px; line-height: 1.65; }
+.funfact-list li { margin-bottom: 5px; }
+
+/* Portrait ≥ 500px: image left, text right inside the card */
+@media (orientation: portrait) and (min-width: 500px) {
+  .results-funfact { flex-direction: row; align-items: flex-start; }
+}
+
+/* ── Results — landscape ── */
+@media (orientation: landscape) {
+  #results {
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Left column: fun fact */
+  .results-funfact {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    border-right: 1px solid var(--border);
+    background: transparent;
+    padding: 0 48px;
+    overflow-y: auto;
+    gap: 0;
+  }
+  /* Inner wrapper gets margin:auto so it centers when content fits,
+     and scrolls naturally when it doesn't */
+  .funfact-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin: auto 0;
+    padding: 40px 0;
+    width: 100%;
+  }
+  .funfact-tile { width: 280px; height: 280px; }
+  .funfact-body { width: 100%; max-width: none; text-align: left; }
+  .funfact-did-you-know { font-size: 12px; }
+  .funfact-title { font-size: 26px; margin-bottom: 14px; }
+  .funfact-list { font-size: 17px; line-height: 1.7; }
+  .funfact-list li { margin-bottom: 8px; }
+
+  /* Right column: score + play again */
+  .results-main {
+    flex: 1 1 0;
+    max-width: none;
+    overflow-y: auto;
+    padding: 36px 32px;
+    justify-content: center;
+  }
+  .results-card { max-width: none; }
+  .results-table td { font-size: 19px; padding: 16px 18px; }
+  .results-table th { font-size: 12px; padding: 13px 18px; }
+  .results-rank-title { font-size: clamp(28px,3.5vw,52px); }
+  .results-rank-quip  { font-size: 17px; }
+  .results-winner-name { font-size: clamp(28px,3.5vw,52px); }
+  .results-winner-sub  { font-size: 18px; }
+}

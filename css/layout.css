@@ -58,8 +58,8 @@
    Bigger board, larger type, roomier cards/swatches.
    -------------------------------------------------- */
 @media (orientation: landscape) and (min-width: 900px) {
-  .settings-logo     { display: block; }
-  .settings-ls-title { display: none; }
+  .settings-logo     { display: none; }
+  .settings-ls-title { display: block; font-size: 20px; font-weight: 800; color: var(--gold-light); letter-spacing: 1px; }
 }
 
 @media (orientation: landscape) and (min-width: 1024px) {
